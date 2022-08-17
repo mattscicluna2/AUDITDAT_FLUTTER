@@ -1,5 +1,7 @@
-import 'package:auditdat/db/repo/noteRepo.dart';
-import 'package:auditdat/db/updat_database.dart';
+import 'dart:io';
+
+import 'package:auditdat/db/repo/note_repo.dart';
+import 'package:auditdat/db/auditdat_database.dart';
 import 'package:auditdat/page/note_detail_page.dart';
 import 'package:auditdat/widget/note_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../db/model/note.dart';
 import 'edit_note_page.dart';
+
 
 class NotesPage extends StatefulWidget {
   @override
@@ -20,6 +23,7 @@ class _NotesPageState extends State<NotesPage> {
   @override
   void initState() {
     super.initState();
+    stderr.writeln("This log is using stderr");
 
     refreshNotes();
   }

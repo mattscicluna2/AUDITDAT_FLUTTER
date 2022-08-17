@@ -1,6 +1,6 @@
 import 'package:auditdat/db/model/note.dart';
-import 'package:auditdat/db/repo/noteRepo.dart';
-import 'package:auditdat/db/updat_database.dart';
+import 'package:auditdat/db/repo/note_repo.dart';
+import 'package:auditdat/db/auditdat_database.dart';
 import 'package:auditdat/widget/note_form_widget.dart';
 import 'package:flutter/material.dart';
 
