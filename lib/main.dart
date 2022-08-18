@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:auditdat/constants/color_constants.dart';
 import 'package:auditdat/constants/material_color_constants.dart';
 import 'package:auditdat/page/categories_page.dart';
+import 'package:auditdat/page/home_page.dart';
 import 'package:auditdat/page/login_page.dart';
+import 'package:auditdat/page/ongoing_inspections_page.dart';
 import 'package:auditdat/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
         builder: (_, snapshot) {
           print(snapshot);
           if (snapshot.hasData) {
-            return CategoriesPage();
+            return HomePage();
           } else {
             return LoginPage();
           }
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/login': (context) => LoginPage(),
-        '/home': (context) => CategoriesPage(),
+        '/home': (context) => HomePage(),
       },
     );
 

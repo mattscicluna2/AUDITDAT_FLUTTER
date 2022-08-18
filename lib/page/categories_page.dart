@@ -1,10 +1,6 @@
-import 'package:auditdat/constants/color_constants.dart';
-import 'package:auditdat/interface/bottom_nav_settings.dart';
-import 'package:auditdat/layout/base_page.dart';
-import 'package:auditdat/layout/tabular_page.dart';
-import 'package:auditdat/service/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'note_detail_page.dart';
 
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({Key? key}) : super(key: key);
@@ -14,57 +10,40 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  static const List<Widget> _pages = <Widget>[
-    Icon(
-      Icons.call,
-      size: 150,
-    ),
-    Icon(
-      Icons.camera,
-      size: 150,
-    ),
-    Icon(
-      Icons.chat,
-      size: 150,
-    ),
-  ];
-
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    return TabularPage(
-      bottomNavSettings: BottomNavSettings(
-        tabItems: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: 'Templates',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.camera),
-            label: 'Ongoing Inspections',
-          ),
-        ],
-        pages: [
-          Center(
-            child: Icon(
-              Icons.call,
-              size: 150,
-            ),
-          ),
-          Icon(
-            Icons.camera,
-            size: 150,
-          ),
-        ]
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: 10.0,
+          vertical: 10
       ),
+     child: GridView.count(
+       // Create a grid with 2 columns. If you change the scrollDirection to
+       // horizontal, this produces 2 rows.
+       crossAxisCount: 2,
+       // Generate 100 widgets that display their index in the List.
+       children: List.generate(5, (index) {
+         return GestureDetector(
+           onTap: () async {
+             await Navigator.of(context).push(MaterialPageRoute(
+             builder: (context) => NoteDetailPage(noteId: index),
+             ));
+           },
+           child: Card(
+             child: Column(
+               mainAxisAlignment: MainAxisAlignment.center,
+               crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
+                 Text(
+                   'Category ${index + 1}',
+                   style: Theme.of(context).textTheme.headline5,
+                 ),
+               ],
+             ),
+           ),
+         );
+       }),
+     ),
     );
   }
-
-  void _onBottomNavItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 }
-
