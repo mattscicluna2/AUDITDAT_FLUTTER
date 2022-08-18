@@ -14,10 +14,10 @@ class AuthService {
 
   Future<Map<String, dynamic>> authenticate(
       String email, String password) async {
-    print('${AppConstants.getEndpointUrl()}/api/notifydat/v1/authenticate');
+    print('${AppConstants.getEndpointUrl()}/api/auditdat/v1/authenticate');
     http.Response response = await http.post(
       Uri.parse(
-          '${AppConstants.getEndpointUrl()}/api/notifydat/v1/authenticate'),
+          '${AppConstants.getEndpointUrl()}/api/auditdat/v1/authenticate'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
