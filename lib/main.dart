@@ -5,6 +5,7 @@ import 'package:auditdat/constants/material_color_constants.dart';
 import 'package:auditdat/page/categories_page.dart';
 import 'package:auditdat/page/home_page.dart';
 import 'package:auditdat/page/login_page.dart';
+import 'package:auditdat/page/offline_demo.dart';
 import 'package:auditdat/page/ongoing_inspections_page.dart';
 import 'package:auditdat/service/auth_service.dart';
 import 'package:flutter/material.dart';
