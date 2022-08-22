@@ -39,7 +39,7 @@ class Template {
       );
 
   //Category Relationship
-  Future<TemplateCategory> category() async =>
+  Future<TemplateCategory?> category() async =>
       await TemplateCategoryRepo.instance.get(categoryId);
 
   static Template fromJson(Map<String, Object?> json) => Template(

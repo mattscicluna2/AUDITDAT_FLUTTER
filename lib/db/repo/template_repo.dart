@@ -44,7 +44,7 @@ class TemplateRepo {
     }
   }
 
-  Future<List<Template>?> getAllByCategory(int? categoryId) async {
+  Future<List<Template>?> getAllByCategory(int categoryId) async {
     final db = await updatDatabaseInstance.database;
 
     final result = await db.query(

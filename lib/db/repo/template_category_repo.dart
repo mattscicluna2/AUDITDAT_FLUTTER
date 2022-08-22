@@ -1,8 +1,10 @@
 
 import 'package:auditdat/db/model/template_category.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../auditdat_database.dart';
+import 'dart:developer';
 
 class TemplateCategoryRepo {
   static final TemplateCategoryRepo instance = TemplateCategoryRepo._init();
@@ -22,11 +24,11 @@ class TemplateCategoryRepo {
   Future<TemplateCategory> create(TemplateCategory category) async {
     final db = await updatDatabaseInstance.database;
 
-    final id = await db.insert(TemplateCategoryTableKeys.tableName, category.toJson());
+    final id = await db.insert(TemplateCategoryTableKeys.tableName, category.toJson(),conflictAlgorithm: ConflictAlgorithm.replace);
     return category.copy(id: id);
   }
 
-  Future<TemplateCategory> get(int id) async {
+  Future<TemplateCategory?> get(int id) async {
     final db = await updatDatabaseInstance.database;
 
     final maps = await db.query(
@@ -39,7 +41,8 @@ class TemplateCategoryRepo {
     if (maps.isNotEmpty) {
       return TemplateCategory.fromJson(maps.first);
     } else {
-      throw Exception('ID $id not found');
+      log("empty");
+      return null;
     }
   }
 
@@ -54,7 +57,7 @@ class TemplateCategoryRepo {
   Future<int> update(TemplateCategory category) async {
     final db = await updatDatabaseInstance.database;
 
-    return db.update(
+    return await db.update(
       TemplateCategoryTableKeys.tableName,
       category.toJson(),
       where: '${TemplateCategoryTableKeys.id} = ?',

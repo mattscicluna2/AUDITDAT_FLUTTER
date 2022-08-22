@@ -1,7 +1,9 @@
 import 'package:auditdat/constants/db_constants.dart';
+import 'package:auditdat/db/model/sync_last_updated.dart';
 import 'package:auditdat/db/model/template.dart';
 import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/repo/note_repo.dart';
+import 'package:auditdat/db/repo/sync_last_updated_repo.dart';
 import 'package:auditdat/db/repo/template_category_repo.dart';
 import 'package:auditdat/db/repo/template_repo.dart';
 import 'package:path/path.dart';
@@ -31,6 +33,8 @@ class UpdatDatabase {
   }
 
   Future _createDB(Database db, int version) async {
+    await db.execute(SyncLastUpdatedRepo.createTable());
+
     await db.execute(NoteRepo.createTable());
     await db.execute(TemplateCategoryRepo.createTable());
     await db.execute(TemplateRepo.createTable());
@@ -39,6 +43,7 @@ class UpdatDatabase {
   Future _upgradeDB(Database db, int oldVersion, int newVersion) async {
     log("SQLiteDatabase.onUpgrade ($oldVersion => $newVersion)");
     if (oldVersion < newVersion) {
+      await db.execute("DROP TABLE IF EXISTS ${SyncLastUpdatedTableKeys.tableName}");
       await db.execute("DROP TABLE IF EXISTS $tableNotes");
       await db.execute("DROP TABLE IF EXISTS ${TemplateCategoryTableKeys.tableName}");
       await db.execute("DROP TABLE IF EXISTS ${TemplateTableKeys.tableName}");
