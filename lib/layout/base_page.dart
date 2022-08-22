@@ -1,10 +1,10 @@
-import 'package:auditdat/dialog/logout_dialog.dart';
+import 'package:auditdat/changenotifier/model/app_settings.dart';
 import 'package:auditdat/widget/auditdat_appbar.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
-class BasePage extends StatelessWidget {
-  /// Body of [BasePage]
+class BasePage extends StatefulWidget {
   final Widget body;
   final Widget? bottomNavigationBar;
 
@@ -13,11 +13,36 @@ class BasePage extends StatelessWidget {
         super(key: key);
 
   @override
+  State<BasePage> createState() => _BasePageState();
+}
+
+class _BasePageState extends State<BasePage> {
+  var subscription;
+
+  @override
+  void initState() {
+    super.initState();
+    var appSettings = context.read<AppSettings>();
+
+    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      appSettings.isOnline = result != ConnectivityResult.none;
+    });
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AuditdatAppbar(),
-      bottomNavigationBar: bottomNavigationBar,
-      body: body,
+      bottomNavigationBar: widget.bottomNavigationBar,
+      body: widget.body,
     );
+  }
+
+  @override
+  void dispose() {
+    print("Disposing Connection ...");
+    super.dispose();
+    subscription.cancel();
   }
 }
