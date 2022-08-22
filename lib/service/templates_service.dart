@@ -14,16 +14,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer';
 
-class CategoriesService {
-  static final CategoriesService instance = CategoriesService._init();
-  CategoriesService._init();
+class TemplatesService {
+  static final TemplatesService instance = TemplatesService._init();
+  TemplatesService._init();
 
-  Future<List<TemplateCategory>> sync(BuildContext context) async {
+  Future<List<TemplateCategory>> sync(BuildContext context, TemplateCategory category) async {
     if(await Utilities.hasInternet()){
-      SyncLastUpdated? syncLastUpdated = await SyncLastUpdatedRepo.instance.get("categories");
+      SyncLastUpdated? syncLastUpdated = await SyncLastUpdatedRepo.instance.get("category/${category.id}/templates");
       String url = syncLastUpdated != null ?
-      '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categories?lastUpdated=${syncLastUpdated.lastUpdated}' :
-      '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categories';
+      '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categoryTemplates/${category.id}?lastUpdated=${syncLastUpdated.lastUpdated}' :
+      '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categoryTemplates/${category.id}';
 
       http.Response response = await http.get(
         Uri.parse(url),
@@ -34,20 +34,22 @@ class CategoriesService {
         },
       );
 
+      log("Templates Sync");
+      log(response.body);
       Map<String, dynamic> decodedResponse = json.decode(response.body);
 
       if(decodedResponse['success']) {
-        TemplateCategory.decode(jsonEncode(decodedResponse['data'])).forEach((category) async {
-          if(category.deleted!){
-            await TemplateCategoryRepo.instance.delete(category.id);
-          }else{
-            await TemplateCategoryRepo.instance.create(category);
-          }
-          log(category.name);
-        });
+        // TemplateCategory.decode(jsonEncode(decodedResponse['data'])).forEach((category) async {
+        //   if(category.deleted!){
+        //     await TemplateCategoryRepo.instance.delete(category.id);
+        //   }else{
+        //     await TemplateCategoryRepo.instance.create(category);
+        //   }
+        //   log(category.name);
+        // });
 
         await SyncLastUpdatedRepo.instance.create(SyncLastUpdated(
-            name: 'categories', lastUpdated: '${DateTime.now().toString()}Z'));
+            name: 'category/${category.id}/templates', lastUpdated: '${DateTime.now().toString()}Z'));
 
         return TemplateCategoryRepo.instance.getAll();
       }
