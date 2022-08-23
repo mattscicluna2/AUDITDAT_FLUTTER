@@ -1,6 +1,7 @@
 import 'package:auditdat/constants/color_constants.dart';
 import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/model/template_version.dart';
+import 'package:auditdat/page/inspection_page.dart';
 import 'package:flutter/material.dart';
 
 class TemplateCardWidget extends StatefulWidget {
@@ -35,8 +36,8 @@ class _TemplateCardWidgetState extends State<TemplateCardWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: (context) => TemplatesPage(category: widget.category)));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const InspectionPage()));
       },
       child: Card(
         color: isLoading

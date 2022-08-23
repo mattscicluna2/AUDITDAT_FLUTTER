@@ -47,12 +47,12 @@ class TemplatesService {
           if (template.deleted) {
             await TemplateRepo.instance.delete(template.id);
           } else {
-            // await TemplateRepo.instance.create(TemplateVersion(
-            //     id: template.currentVersion.id,
-            //     templateId: template.id,
-            //     categoryId: template.categoryId,
-            //     name: template.currentVersion.name,
-            //     version: template.currentVersion.version));
+            await TemplateRepo.instance.create(TemplateVersion(
+                id: template.currentVersion.id,
+                templateId: template.id,
+                categoryId: template.categoryId,
+                name: template.currentVersion.name,
+                version: template.currentVersion.version));
           }
           log(template.currentVersion.name);
         });
@@ -63,9 +63,9 @@ class TemplatesService {
         await TemplateRepo.instance
             .deleteAllNotInListOfCategory(category.id, hasAccessToIds);
 
-        // await SyncLastUpdatedRepo.instance.create(SyncLastUpdated(
-        //     name: 'category/${category.id}/templates',
-        //     lastUpdated: '${DateTime.now().toString()}Z'));
+        await SyncLastUpdatedRepo.instance.create(SyncLastUpdated(
+            name: 'category/${category.id}/templates',
+            lastUpdated: '${DateTime.now().toString()}Z'));
 
         return TemplateRepo.instance.getAllByCategory(category.id);
       }
