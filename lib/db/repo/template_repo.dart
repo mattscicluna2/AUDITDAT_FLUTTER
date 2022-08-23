@@ -1,4 +1,4 @@
-import 'package:auditdat/db/model/template.dart';
+import 'package:auditdat/db/model/template_version.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../auditdat_database.dart';
@@ -13,6 +13,7 @@ class TemplateRepo {
     return '''
       CREATE TABLE ${TemplateTableKeys.tableName} ( 
         ${TemplateTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
+        ${TemplateTableKeys.templateId} INTEGER NOT NULL,
         ${TemplateTableKeys.categoryId} INTEGER NOT NULL,
         ${TemplateTableKeys.name} TEXT NOT NULL,
         ${TemplateTableKeys.version} TEXT NOT NULL
@@ -20,7 +21,7 @@ class TemplateRepo {
       ''';
   }
 
-  Future<Template> create(Template template) async {
+  Future<TemplateVersion> create(TemplateVersion template) async {
     final db = await updatDatabaseInstance.database;
 
     final id = await db.insert(TemplateTableKeys.tableName, template.toJson(),
@@ -28,7 +29,7 @@ class TemplateRepo {
     return template.copy(id: id);
   }
 
-  Future<Template> get(int id) async {
+  Future<TemplateVersion> get(int id) async {
     final db = await updatDatabaseInstance.database;
 
     final maps = await db.query(
@@ -39,13 +40,13 @@ class TemplateRepo {
     );
 
     if (maps.isNotEmpty) {
-      return Template.fromJson(maps.first);
+      return TemplateVersion.fromJson(maps.first);
     } else {
       throw Exception('ID $id not found');
     }
   }
 
-  Future<List<Template>> getAllByCategory(int categoryId) async {
+  Future<List<TemplateVersion>> getAllByCategory(int categoryId) async {
     final db = await updatDatabaseInstance.database;
 
     final result = await db.query(
@@ -56,21 +57,21 @@ class TemplateRepo {
     );
 
     if (result.isNotEmpty) {
-      return result.map((json) => Template.fromJson(json)).toList();
+      return result.map((json) => TemplateVersion.fromJson(json)).toList();
     }
 
     return [];
   }
 
-  Future<List<Template>> getAll() async {
+  Future<List<TemplateVersion>> getAll() async {
     final db = await updatDatabaseInstance.database;
 
     final result = await db.query(TemplateTableKeys.tableName);
 
-    return result.map((json) => Template.fromJson(json)).toList();
+    return result.map((json) => TemplateVersion.fromJson(json)).toList();
   }
 
-  Future<int> update(Template template) async {
+  Future<int> update(TemplateVersion template) async {
     final db = await updatDatabaseInstance.database;
 
     return db.update(
@@ -99,7 +100,7 @@ class TemplateRepo {
       return await db.delete(
         TemplateTableKeys.tableName,
         where:
-            'category_id = ? AND id NOT IN (${ids.map((_) => '?').join(', ')})',
+            'category_id = ? AND template_id NOT IN (${ids.map((_) => '?').join(', ')})',
         whereArgs: [categoryId] + ids,
       );
     } else {

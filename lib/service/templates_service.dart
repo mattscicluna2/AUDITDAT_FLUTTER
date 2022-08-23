@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:auditdat/common/utilities.dart';
 import 'package:auditdat/constants/app_constants.dart';
 import 'package:auditdat/db/model/sync_last_updated.dart';
-import 'package:auditdat/db/model/template.dart';
 import 'package:auditdat/db/model/template_category.dart';
+import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/db/repo/sync_last_updated_repo.dart';
 import 'package:auditdat/db/repo/template_repo.dart';
 import 'package:auditdat/dto/TemplateDto.dart';
@@ -17,7 +17,7 @@ class TemplatesService {
   static final TemplatesService instance = TemplatesService._init();
   TemplatesService._init();
 
-  Future<List<Template>> sync(
+  Future<List<TemplateVersion>> sync(
       BuildContext context, TemplateCategory category) async {
     if (await Utilities.hasInternet()) {
       SyncLastUpdated? syncLastUpdated = await SyncLastUpdatedRepo.instance
@@ -47,11 +47,12 @@ class TemplatesService {
           if (template.deleted) {
             await TemplateRepo.instance.delete(template.id);
           } else {
-            await TemplateRepo.instance.create(Template(
-                id: template.id,
-                categoryId: template.categoryId,
-                name: template.currentVersion.name,
-                version: template.currentVersion.version));
+            // await TemplateRepo.instance.create(TemplateVersion(
+            //     id: template.currentVersion.id,
+            //     templateId: template.id,
+            //     categoryId: template.categoryId,
+            //     name: template.currentVersion.name,
+            //     version: template.currentVersion.version));
           }
           log(template.currentVersion.name);
         });
@@ -62,9 +63,9 @@ class TemplatesService {
         await TemplateRepo.instance
             .deleteAllNotInListOfCategory(category.id, hasAccessToIds);
 
-        await SyncLastUpdatedRepo.instance.create(SyncLastUpdated(
-            name: 'category/${category.id}/templates',
-            lastUpdated: '${DateTime.now().toString()}Z'));
+        // await SyncLastUpdatedRepo.instance.create(SyncLastUpdated(
+        //     name: 'category/${category.id}/templates',
+        //     lastUpdated: '${DateTime.now().toString()}Z'));
 
         return TemplateRepo.instance.getAllByCategory(category.id);
       }

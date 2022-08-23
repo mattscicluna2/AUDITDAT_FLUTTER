@@ -1,6 +1,7 @@
-import 'package:auditdat/db/model/template.dart';
-import 'package:auditdat/db/repo/template_repo.dart';
 import 'dart:convert';
+
+import 'package:auditdat/db/model/template_version.dart';
+import 'package:auditdat/db/repo/template_repo.dart';
 
 class TemplateCategoryTableKeys {
   static const String tableName = 'template_categories';
@@ -34,7 +35,7 @@ class TemplateCategory {
           id: id ?? this.id, name: this.name, deleted: this.deleted);
 
   //Category Relationship
-  Future<List<Template>?> templates() async =>
+  Future<List<TemplateVersion>?> templates() async =>
       await TemplateRepo.instance.getAllByCategory(id);
 
   static TemplateCategory fromJson(Map<String, Object?> json) =>

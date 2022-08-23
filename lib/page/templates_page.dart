@@ -1,6 +1,6 @@
 import 'package:auditdat/changenotifier/model/app_settings.dart';
-import 'package:auditdat/db/model/template.dart';
 import 'package:auditdat/db/model/template_category.dart';
+import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/db/repo/template_repo.dart';
 import 'package:auditdat/layout/base_page.dart';
 import 'package:auditdat/service/templates_service.dart';
@@ -20,7 +20,7 @@ class TemplatesPage extends StatefulWidget {
 
 class _TemplatesPageState extends State<TemplatesPage> {
   bool isLoading = false;
-  List<Template> templates = [];
+  List<TemplateVersion> templates = [];
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _TemplatesPageState extends State<TemplatesPage> {
   Future getTemplates(bool sync) async {
     setState(() => isLoading = true);
     //
-    List<Template> _templates = [];
+    List<TemplateVersion> _templates = [];
 
     if (!sync) {
       _templates =

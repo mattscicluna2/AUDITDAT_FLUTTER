@@ -1,11 +1,11 @@
 import 'package:auditdat/constants/color_constants.dart';
-import 'package:auditdat/db/model/template.dart';
 import 'package:auditdat/db/model/template_category.dart';
+import 'package:auditdat/db/model/template_version.dart';
 import 'package:flutter/material.dart';
 
 class TemplateCardWidget extends StatefulWidget {
-  final Template template;
-  const TemplateCardWidget({Key? key, required Template this.template})
+  final TemplateVersion template;
+  const TemplateCardWidget({Key? key, required TemplateVersion this.template})
       : super(key: key);
 
   @override

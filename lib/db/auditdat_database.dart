@@ -1,14 +1,16 @@
+import 'dart:developer';
+
 import 'package:auditdat/constants/db_constants.dart';
 import 'package:auditdat/db/model/sync_last_updated.dart';
-import 'package:auditdat/db/model/template.dart';
 import 'package:auditdat/db/model/template_category.dart';
+import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/db/repo/note_repo.dart';
 import 'package:auditdat/db/repo/sync_last_updated_repo.dart';
 import 'package:auditdat/db/repo/template_category_repo.dart';
 import 'package:auditdat/db/repo/template_repo.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'dart:developer';
+
 import 'model/note.dart';
 
 class UpdatDatabase {
