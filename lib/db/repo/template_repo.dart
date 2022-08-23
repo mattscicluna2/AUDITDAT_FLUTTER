@@ -1,5 +1,5 @@
 import 'package:auditdat/db/model/template.dart';
-import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../auditdat_database.dart';
 
@@ -13,6 +13,7 @@ class TemplateRepo {
     return '''
       CREATE TABLE ${TemplateTableKeys.tableName} ( 
         ${TemplateTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
+        ${TemplateTableKeys.categoryId} INTEGER NOT NULL,
         ${TemplateTableKeys.name} TEXT NOT NULL,
         ${TemplateTableKeys.version} TEXT NOT NULL
         )
@@ -22,7 +23,8 @@ class TemplateRepo {
   Future<Template> create(Template template) async {
     final db = await updatDatabaseInstance.database;
 
-    final id = await db.insert(TemplateTableKeys.tableName, template.toJson());
+    final id = await db.insert(TemplateTableKeys.tableName, template.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
     return template.copy(id: id);
   }
 
@@ -43,7 +45,7 @@ class TemplateRepo {
     }
   }
 
-  Future<List<Template>?> getAllByCategory(int categoryId) async {
+  Future<List<Template>> getAllByCategory(int categoryId) async {
     final db = await updatDatabaseInstance.database;
 
     final result = await db.query(
@@ -57,7 +59,7 @@ class TemplateRepo {
       return result.map((json) => Template.fromJson(json)).toList();
     }
 
-    return null;
+    return [];
   }
 
   Future<List<Template>> getAll() async {
@@ -87,5 +89,25 @@ class TemplateRepo {
       where: '${TemplateTableKeys.id} = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<int> deleteAllNotInListOfCategory(
+      int categoryId, List<int> ids) async {
+    final db = await updatDatabaseInstance.database;
+
+    if (ids.length > 0) {
+      return await db.delete(
+        TemplateTableKeys.tableName,
+        where:
+            'category_id = ? AND id NOT IN (${ids.map((_) => '?').join(', ')})',
+        whereArgs: [categoryId] + ids,
+      );
+    } else {
+      return await db.delete(
+        TemplateTableKeys.tableName,
+        where: 'category_id = ?',
+        whereArgs: [categoryId],
+      );
+    }
   }
 }

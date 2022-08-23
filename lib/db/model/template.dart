@@ -13,13 +13,13 @@ class TemplateTableKeys {
 }
 
 class Template {
-  final int? id;
+  final int id;
   final int categoryId;
   final String name;
   final String version;
 
   const Template({
-    this.id,
+    required this.id,
     required this.categoryId,
     required this.name,
     required this.version,
@@ -41,7 +41,7 @@ class Template {
       await TemplateCategoryRepo.instance.get(categoryId);
 
   static Template fromJson(Map<String, Object?> json) => Template(
-        id: json[TemplateTableKeys.id] as int?,
+        id: json[TemplateTableKeys.id] as int,
         categoryId: json[TemplateTableKeys.categoryId] as int,
         name: json[TemplateTableKeys.name] as String,
         version: json[TemplateTableKeys.version] as String,

@@ -1,6 +1,6 @@
 import 'package:auditdat/constants/color_constants.dart';
 import 'package:auditdat/db/model/template_category.dart';
-import 'package:auditdat/service/categories_service.dart';
+import 'package:auditdat/page/templates_page.dart';
 import 'package:auditdat/service/templates_service.dart';
 import 'package:flutter/material.dart';
 
@@ -27,9 +27,7 @@ class _CategoryCardWidgetState extends State<CategoryCardWidget> {
   Future getTemplates() async {
     setState(() => isLoading = true);
 
-    var _categories =
-        await TemplatesService.instance.sync(context, widget.category);
-    setState(() => categories = _categories);
+    await TemplatesService.instance.sync(context, widget.category);
 
     setState(() => isLoading = false);
   }
@@ -37,9 +35,14 @@ class _CategoryCardWidgetState extends State<CategoryCardWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {},
+      onTap: () async {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => TemplatesPage(category: widget.category)));
+      },
       child: Card(
-        color: ColorConstants.white.withOpacity(0.5),
+        color: isLoading
+            ? ColorConstants.white.withOpacity(0.5)
+            : ColorConstants.white.withOpacity(1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -47,7 +50,7 @@ class _CategoryCardWidgetState extends State<CategoryCardWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircularProgressIndicator(),
+            if (isLoading) CircularProgressIndicator(),
             SizedBox(height: 10),
             Text(
               widget.category.name,
