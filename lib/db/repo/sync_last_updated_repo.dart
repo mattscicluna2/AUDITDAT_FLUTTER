@@ -1,4 +1,3 @@
-
 import 'package:auditdat/db/auditdat_database.dart';
 import 'package:auditdat/db/model/sync_last_updated.dart';
 import 'package:sqflite/sqflite.dart';
@@ -9,7 +8,7 @@ class SyncLastUpdatedRepo {
 
   SyncLastUpdatedRepo._init();
 
-  static String createTable(){
+  static String createTable() {
     return '''
       CREATE TABLE ${SyncLastUpdatedTableKeys.tableName} ( 
         ${SyncLastUpdatedTableKeys.name} TEXT PRIMARY KEY,
@@ -18,11 +17,12 @@ class SyncLastUpdatedRepo {
       ''';
   }
 
-
   Future<SyncLastUpdated> create(SyncLastUpdated sync) async {
     final db = await updatDatabaseInstance.database;
 
-    final id = await db.insert(SyncLastUpdatedTableKeys.tableName, sync.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+    final id = await db.insert(
+        SyncLastUpdatedTableKeys.tableName, sync.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
     return sync.copy(id: id);
   }
 

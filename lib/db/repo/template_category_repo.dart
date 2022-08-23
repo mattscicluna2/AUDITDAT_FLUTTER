@@ -1,4 +1,3 @@
-
 import 'package:auditdat/db/model/template_category.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -12,7 +11,7 @@ class TemplateCategoryRepo {
 
   TemplateCategoryRepo._init();
 
-  static String createTable(){
+  static String createTable() {
     return '''
       CREATE TABLE ${TemplateCategoryTableKeys.tableName} ( 
         ${TemplateCategoryTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -24,7 +23,9 @@ class TemplateCategoryRepo {
   Future<TemplateCategory> create(TemplateCategory category) async {
     final db = await updatDatabaseInstance.database;
 
-    final id = await db.insert(TemplateCategoryTableKeys.tableName, category.toJson(),conflictAlgorithm: ConflictAlgorithm.replace);
+    final id = await db.insert(
+        TemplateCategoryTableKeys.tableName, category.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
     return category.copy(id: id);
   }
 

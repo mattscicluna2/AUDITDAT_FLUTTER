@@ -4,9 +4,7 @@ import 'package:auditdat/db/repo/template_category_repo.dart';
 class TemplateTableKeys {
   static const String tableName = 'templates';
 
-  static const List<String> values = [
-    id, categoryId, name, version
-  ];
+  static const List<String> values = [id, categoryId, name, version];
 
   static const String id = 'id';
   static const String categoryId = 'category_id';
@@ -43,16 +41,16 @@ class Template {
       await TemplateCategoryRepo.instance.get(categoryId);
 
   static Template fromJson(Map<String, Object?> json) => Template(
-    id: json[TemplateTableKeys.id] as int?,
-    categoryId: json[TemplateTableKeys.categoryId] as int,
-    name: json[TemplateTableKeys.name] as String,
-    version: json[TemplateTableKeys.version] as String,
-  );
+        id: json[TemplateTableKeys.id] as int?,
+        categoryId: json[TemplateTableKeys.categoryId] as int,
+        name: json[TemplateTableKeys.name] as String,
+        version: json[TemplateTableKeys.version] as String,
+      );
 
   Map<String, Object?> toJson() => {
-    TemplateTableKeys.id: id,
-    TemplateTableKeys.categoryId: categoryId,
-    TemplateTableKeys.name: name,
-    TemplateTableKeys.version: version,
-  };
+        TemplateTableKeys.id: id,
+        TemplateTableKeys.categoryId: categoryId,
+        TemplateTableKeys.name: name,
+        TemplateTableKeys.version: version,
+      };
 }

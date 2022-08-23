@@ -24,10 +24,11 @@ class _BasePageState extends State<BasePage> {
     super.initState();
     var appSettings = context.read<AppSettings>();
 
-    subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
       appSettings.isOnline = result != ConnectivityResult.none;
     });
-
   }
 
   @override

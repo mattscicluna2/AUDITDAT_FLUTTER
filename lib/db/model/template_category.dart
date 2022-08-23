@@ -31,27 +31,23 @@ class TemplateCategory {
     String? name,
   }) =>
       TemplateCategory(
-        id: id ?? this.id,
-        name: this.name,
-        deleted: this.deleted
-      );
-
+          id: id ?? this.id, name: this.name, deleted: this.deleted);
 
   //Category Relationship
   Future<List<Template>?> templates() async =>
       await TemplateRepo.instance.getAllByCategory(id);
 
-  static TemplateCategory fromJson(Map<String, Object?> json) => TemplateCategory(
-    id: json[TemplateCategoryTableKeys.id] as int,
-    name: json[TemplateCategoryTableKeys.name] as String,
-    deleted: json[TemplateCategoryTableKeys.deleted] as bool?,
-  );
+  static TemplateCategory fromJson(Map<String, Object?> json) =>
+      TemplateCategory(
+        id: json[TemplateCategoryTableKeys.id] as int,
+        name: json[TemplateCategoryTableKeys.name] as String,
+        deleted: json[TemplateCategoryTableKeys.deleted] as bool?,
+      );
 
   Map<String, Object?> toJson() => {
-    TemplateCategoryTableKeys.id: id,
-    TemplateCategoryTableKeys.name: name,
-  };
-
+        TemplateCategoryTableKeys.id: id,
+        TemplateCategoryTableKeys.name: name,
+      };
 
   static List<TemplateCategory> decode(String categories) =>
       (json.decode(categories) as List<dynamic>)

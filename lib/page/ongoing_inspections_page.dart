@@ -12,11 +12,10 @@ class _OngoingInspectionsPageState extends State<OngoingInspectionsPage> {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-          child:Text(
-            'Ongoing Inspections',
-            style: TextStyle(fontWeight: FontWeight.w500),
-          )
-      ),
+          child: Text(
+        'Ongoing Inspections',
+        style: TextStyle(fontWeight: FontWeight.w500),
+      )),
     );
   }
 }

@@ -18,12 +18,14 @@ class TemplatesService {
   static final TemplatesService instance = TemplatesService._init();
   TemplatesService._init();
 
-  Future<List<TemplateCategory>> sync(BuildContext context, TemplateCategory category) async {
-    if(await Utilities.hasInternet()){
-      SyncLastUpdated? syncLastUpdated = await SyncLastUpdatedRepo.instance.get("category/${category.id}/templates");
-      String url = syncLastUpdated != null ?
-      '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categoryTemplates/${category.id}?lastUpdated=${syncLastUpdated.lastUpdated}' :
-      '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categoryTemplates/${category.id}';
+  Future<List<TemplateCategory>> sync(
+      BuildContext context, TemplateCategory category) async {
+    if (await Utilities.hasInternet()) {
+      SyncLastUpdated? syncLastUpdated = await SyncLastUpdatedRepo.instance
+          .get("category/${category.id}/templates");
+      String url = syncLastUpdated != null
+          ? '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categoryTemplates/${category.id}?lastUpdated=${syncLastUpdated.lastUpdated}'
+          : '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categoryTemplates/${category.id}';
 
       http.Response response = await http.get(
         Uri.parse(url),
@@ -38,7 +40,7 @@ class TemplatesService {
       log(response.body);
       Map<String, dynamic> decodedResponse = json.decode(response.body);
 
-      if(decodedResponse['success']) {
+      if (decodedResponse['success']) {
         // TemplateCategory.decode(jsonEncode(decodedResponse['data'])).forEach((category) async {
         //   if(category.deleted!){
         //     await TemplateCategoryRepo.instance.delete(category.id);
@@ -49,11 +51,12 @@ class TemplatesService {
         // });
 
         await SyncLastUpdatedRepo.instance.create(SyncLastUpdated(
-            name: 'category/${category.id}/templates', lastUpdated: '${DateTime.now().toString()}Z'));
+            name: 'category/${category.id}/templates',
+            lastUpdated: '${DateTime.now().toString()}Z'));
 
         return TemplateCategoryRepo.instance.getAll();
       }
-    }else{
+    } else {
       Utilities.showToast(
           context: context,
           message: 'An internet connection is required to perform this action.',

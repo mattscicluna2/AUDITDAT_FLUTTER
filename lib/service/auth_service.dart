@@ -9,7 +9,6 @@ class AuthService {
   static final AuthService instance = AuthService._init();
   static late SharedPreferences prefs;
 
-
   AuthService._init();
 
   Future<Map<String, dynamic>> authenticate(

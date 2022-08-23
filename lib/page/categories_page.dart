@@ -28,28 +28,28 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Future getCategories() async {
     setState(() => isLoading = true);
 
-    var _categories  = await CategoriesService.instance.sync(context);
+    var _categories = await CategoriesService.instance.sync(context);
     setState(() => categories = _categories);
 
     setState(() => isLoading = false);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return isLoading ?
-      Center(child: CircularProgressIndicator()) :
-       RefreshIndicator(
-         onRefresh: () async {
-           getCategories();
-         },
-         child: GridView.count(
-           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
-           crossAxisCount: 2,
-           children: List.generate(categories.length, (index) {
-              return CategoryCardWidget(category: categories[index]);
-           }),
-         ),
-       );
+    return isLoading
+        ? Center(child: CircularProgressIndicator())
+        : RefreshIndicator(
+            onRefresh: () async {
+              getCategories();
+            },
+            child: GridView.count(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
+              crossAxisCount: 2,
+              children: List.generate(categories.length, (index) {
+                return CategoryCardWidget(category: categories[index]);
+              }),
+            ),
+          );
   }
 }

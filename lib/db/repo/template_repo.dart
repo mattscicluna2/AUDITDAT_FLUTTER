@@ -1,4 +1,3 @@
-
 import 'package:auditdat/db/model/template.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +9,7 @@ class TemplateRepo {
 
   TemplateRepo._init();
 
-  static String createTable(){
+  static String createTable() {
     return '''
       CREATE TABLE ${TemplateTableKeys.tableName} ( 
         ${TemplateTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -54,7 +53,7 @@ class TemplateRepo {
       whereArgs: [categoryId],
     );
 
-    if (result.isNotEmpty){
+    if (result.isNotEmpty) {
       return result.map((json) => Template.fromJson(json)).toList();
     }
 

@@ -30,27 +30,26 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) => MaterialApp(
-      theme: ThemeData(
-        primarySwatch: MaterialColor(ColorConstants.primary.value, MaterialColorConstants.primary),
-      ),
-      home: FutureBuilder(
-        future: AuthService.instance.getUser(),
-        builder: (_, snapshot) {
-          print(snapshot);
-          if (snapshot.hasData) {
-            return HomePage();
-          } else {
-            return LoginPage();
-          }
+        theme: ThemeData(
+          primarySwatch: MaterialColor(
+              ColorConstants.primary.value, MaterialColorConstants.primary),
+        ),
+        home: FutureBuilder(
+          future: AuthService.instance.getUser(),
+          builder: (_, snapshot) {
+            print(snapshot);
+            if (snapshot.hasData) {
+              return HomePage();
+            } else {
+              return LoginPage();
+            }
+          },
+        ),
+        routes: {
+          '/login': (context) => LoginPage(),
+          '/home': (context) => HomePage(),
         },
-      ),
-      routes: {
-        '/login': (context) => LoginPage(),
-        '/home': (context) => HomePage(),
-      },
-    );
-
+      );
 }

@@ -12,27 +12,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return TabularPage(
-      bottomNavSettings: BottomNavSettings(
-        tabItems: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: 'Templates',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.camera),
-            label: 'Ongoing Inspections',
-          ),
-        ],
-        pages: [
-          CategoriesPage(),
-          OngoingInspectionsPage()
-        ]
-      ),
+      bottomNavSettings: BottomNavSettings(tabItems: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.call),
+          label: 'Templates',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.camera),
+          label: 'Ongoing Inspections',
+        ),
+      ], pages: [
+        CategoriesPage(),
+        OngoingInspectionsPage()
+      ]),
     );
   }
 }
-

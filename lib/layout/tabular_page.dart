@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class TabularPage extends StatefulWidget {
   final BottomNavSettings bottomNavSettings;
 
-  const TabularPage({ required this.bottomNavSettings, Key? key})
+  const TabularPage({required this.bottomNavSettings, Key? key})
       : assert(bottomNavSettings != null),
         super(key: key);
 
@@ -19,12 +19,12 @@ class _TabularPageState extends State<TabularPage> {
   @override
   Widget build(BuildContext context) {
     return BasePage(
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onBottomNavItemTapped,
-          items: widget.bottomNavSettings.tabItems,
-        ),
-        body: widget.bottomNavSettings.pages.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onBottomNavItemTapped,
+        items: widget.bottomNavSettings.tabItems,
+      ),
+      body: widget.bottomNavSettings.pages.elementAt(_selectedIndex),
     );
   }
 

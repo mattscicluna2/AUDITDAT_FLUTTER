@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 
 class CategoryCardWidget extends StatefulWidget {
   final TemplateCategory category;
-  const CategoryCardWidget({Key? key, required TemplateCategory this.category}) : super(key: key);
+  const CategoryCardWidget({Key? key, required TemplateCategory this.category})
+      : super(key: key);
 
   @override
   State<CategoryCardWidget> createState() => _CategoryCardWidgetState();
@@ -26,7 +27,8 @@ class _CategoryCardWidgetState extends State<CategoryCardWidget> {
   Future getTemplates() async {
     setState(() => isLoading = true);
 
-    var _categories  = await TemplatesService.instance.sync(context, widget.category);
+    var _categories =
+        await TemplatesService.instance.sync(context, widget.category);
     setState(() => categories = _categories);
 
     setState(() => isLoading = false);
@@ -35,8 +37,7 @@ class _CategoryCardWidgetState extends State<CategoryCardWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-      },
+      onTap: () async {},
       child: Card(
         color: ColorConstants.white.withOpacity(0.5),
         shape: RoundedRectangleBorder(

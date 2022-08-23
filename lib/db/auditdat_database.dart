@@ -29,7 +29,10 @@ class UpdatDatabase {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: DBConstants.version, onCreate: _createDB, onUpgrade: _upgradeDB);
+    return await openDatabase(path,
+        version: DBConstants.version,
+        onCreate: _createDB,
+        onUpgrade: _upgradeDB);
   }
 
   Future _createDB(Database db, int version) async {
@@ -43,9 +46,11 @@ class UpdatDatabase {
   Future _upgradeDB(Database db, int oldVersion, int newVersion) async {
     log("SQLiteDatabase.onUpgrade ($oldVersion => $newVersion)");
     if (oldVersion < newVersion) {
-      await db.execute("DROP TABLE IF EXISTS ${SyncLastUpdatedTableKeys.tableName}");
+      await db.execute(
+          "DROP TABLE IF EXISTS ${SyncLastUpdatedTableKeys.tableName}");
       await db.execute("DROP TABLE IF EXISTS $tableNotes");
-      await db.execute("DROP TABLE IF EXISTS ${TemplateCategoryTableKeys.tableName}");
+      await db.execute(
+          "DROP TABLE IF EXISTS ${TemplateCategoryTableKeys.tableName}");
       await db.execute("DROP TABLE IF EXISTS ${TemplateTableKeys.tableName}");
 
       await _createDB(db, newVersion);

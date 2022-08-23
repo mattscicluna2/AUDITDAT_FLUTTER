@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
           elevation: 5.0,
           padding: EdgeInsets.all(15),
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
           primary: Colors.white,
           onPrimary: ColorConstants.secondary,
         ),
@@ -153,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (await Utilities.hasInternet()) {
       Map<String, dynamic> response =
-      await AuthService.instance.authenticate(email, password);
+          await AuthService.instance.authenticate(email, password);
       dynamic token = response['token'];
       dynamic user = response['user'];
 

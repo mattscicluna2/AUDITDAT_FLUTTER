@@ -19,11 +19,12 @@ class CategoriesService {
   CategoriesService._init();
 
   Future<List<TemplateCategory>> sync(BuildContext context) async {
-    if(await Utilities.hasInternet()){
-      SyncLastUpdated? syncLastUpdated = await SyncLastUpdatedRepo.instance.get("categories");
-      String url = syncLastUpdated != null ?
-      '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categories?lastUpdated=${syncLastUpdated.lastUpdated}' :
-      '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categories';
+    if (await Utilities.hasInternet()) {
+      SyncLastUpdated? syncLastUpdated =
+          await SyncLastUpdatedRepo.instance.get("categories");
+      String url = syncLastUpdated != null
+          ? '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categories?lastUpdated=${syncLastUpdated.lastUpdated}'
+          : '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categories';
 
       http.Response response = await http.get(
         Uri.parse(url),
@@ -36,11 +37,12 @@ class CategoriesService {
 
       Map<String, dynamic> decodedResponse = json.decode(response.body);
 
-      if(decodedResponse['success']) {
-        TemplateCategory.decode(jsonEncode(decodedResponse['data'])).forEach((category) async {
-          if(category.deleted!){
+      if (decodedResponse['success']) {
+        TemplateCategory.decode(jsonEncode(decodedResponse['data']))
+            .forEach((category) async {
+          if (category.deleted!) {
             await TemplateCategoryRepo.instance.delete(category.id);
-          }else{
+          } else {
             await TemplateCategoryRepo.instance.create(category);
           }
           log(category.name);
@@ -51,7 +53,7 @@ class CategoriesService {
 
         return TemplateCategoryRepo.instance.getAll();
       }
-    }else{
+    } else {
       Utilities.showToast(
           context: context,
           message: 'An internet connection is required to perform this action.',
