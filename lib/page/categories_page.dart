@@ -1,11 +1,9 @@
-import 'package:auditdat/constants/color_constants.dart';
+import 'package:auditdat/changenotifier/model/app_settings.dart';
 import 'package:auditdat/db/model/template_category.dart';
-import 'package:auditdat/db/repo/template_category_repo.dart';
 import 'package:auditdat/service/categories_service.dart';
 import 'package:auditdat/widget/category_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
-import 'note_detail_page.dart';
+import 'package:provider/provider.dart';
 
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({Key? key}) : super(key: key);
@@ -36,11 +34,13 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   Widget build(BuildContext context) {
+    var appSettings = context.watch<AppSettings>();
+
     return isLoading
         ? Center(child: CircularProgressIndicator())
         : RefreshIndicator(
             onRefresh: () async {
-              getCategories();
+              appSettings.isOnline ? getCategories() : null;
             },
             child: GridView.count(
               padding:

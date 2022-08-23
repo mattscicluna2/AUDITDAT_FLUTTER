@@ -1,9 +1,9 @@
+import 'dart:developer';
+
 import 'package:auditdat/db/model/template_category.dart';
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../auditdat_database.dart';
-import 'dart:developer';
 
 class TemplateCategoryRepo {
   static final TemplateCategoryRepo instance = TemplateCategoryRepo._init();
@@ -74,5 +74,23 @@ class TemplateCategoryRepo {
       where: '${TemplateCategoryTableKeys.id} = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<int> deleteAllNotInList(List<int> ids) async {
+    final db = await updatDatabaseInstance.database;
+
+    if (ids.length > 0) {
+      return await db.delete(
+        TemplateCategoryTableKeys.tableName,
+        where: 'id NOT IN (${ids.map((_) => '?').join(', ')})',
+        whereArgs: ids,
+      );
+    } else {
+      return await db.delete(
+        TemplateCategoryTableKeys.tableName,
+        where: '',
+        whereArgs: [],
+      );
+    }
   }
 }

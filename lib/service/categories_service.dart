@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:auditdat/common/utilities.dart';
 import 'package:auditdat/constants/app_constants.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'dart:developer';
 
 class CategoriesService {
   static final CategoriesService instance = CategoriesService._init();
@@ -38,7 +38,8 @@ class CategoriesService {
       Map<String, dynamic> decodedResponse = json.decode(response.body);
 
       if (decodedResponse['success']) {
-        TemplateCategory.decode(jsonEncode(decodedResponse['data']))
+        TemplateCategory.decode(
+                jsonEncode(decodedResponse['data']['categories']))
             .forEach((category) async {
           if (category.deleted!) {
             await TemplateCategoryRepo.instance.delete(category.id);
@@ -47,6 +48,11 @@ class CategoriesService {
           }
           log(category.name);
         });
+
+        List<int> hasAccessToIds =
+            List<int>.from(decodedResponse['data']['hasAccessTo']);
+
+        await TemplateCategoryRepo.instance.deleteAllNotInList(hasAccessToIds);
 
         await SyncLastUpdatedRepo.instance.create(SyncLastUpdated(
             name: 'categories', lastUpdated: '${DateTime.now().toString()}Z'));

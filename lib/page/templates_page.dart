@@ -1,10 +1,13 @@
+import 'package:auditdat/changenotifier/model/app_settings.dart';
 import 'package:auditdat/db/model/template.dart';
 import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/repo/template_repo.dart';
 import 'package:auditdat/layout/base_page.dart';
 import 'package:auditdat/service/templates_service.dart';
+import 'package:auditdat/widget/template_card_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TemplatesPage extends StatefulWidget {
   final TemplateCategory category;
@@ -46,40 +49,21 @@ class _TemplatesPageState extends State<TemplatesPage> {
 
   @override
   Widget build(BuildContext context) {
+    var appSettings = context.watch<AppSettings>();
+
     return BasePage(
         body: isLoading
             ? Center(child: CircularProgressIndicator())
             : RefreshIndicator(
                 onRefresh: () async {
-                  getTemplates(true);
+                  appSettings.isOnline ? getTemplates(true) : null;
                 },
                 child: GridView.count(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 10, vertical: 10.0),
                   crossAxisCount: 2,
                   children: List.generate(templates.length, (index) {
-                    return Card(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              templates[index].name,
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "V${templates[index].version}",
-                              textAlign: TextAlign.center,
-                            ),
-                          ]),
-                    );
+                    return TemplateCardWidget(template: templates[index]);
                     // return CategoryCardWidget(category: templates[index]);
                   }),
                 ),
