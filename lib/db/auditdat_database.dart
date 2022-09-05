@@ -6,7 +6,10 @@ import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/model/template_check.dart';
 import 'package:auditdat/db/model/template_component.dart';
 import 'package:auditdat/db/model/template_field.dart';
+import 'package:auditdat/db/model/template_field_type.dart';
 import 'package:auditdat/db/model/template_page.dart';
+import 'package:auditdat/db/model/template_response.dart';
+import 'package:auditdat/db/model/template_response_group.dart';
 import 'package:auditdat/db/model/template_section.dart';
 import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/db/repo/note_repo.dart';
@@ -15,7 +18,10 @@ import 'package:auditdat/db/repo/template_category_repo.dart';
 import 'package:auditdat/db/repo/template_check_repo.dart';
 import 'package:auditdat/db/repo/template_component_repo.dart';
 import 'package:auditdat/db/repo/template_field_repo.dart';
+import 'package:auditdat/db/repo/template_field_type_repo.dart';
 import 'package:auditdat/db/repo/template_page_repo.dart';
+import 'package:auditdat/db/repo/template_response_group_repo.dart';
+import 'package:auditdat/db/repo/template_response_repo.dart';
 import 'package:auditdat/db/repo/template_section_repo.dart';
 import 'package:auditdat/db/repo/template_version_repo.dart';
 import 'package:path/path.dart';
@@ -53,6 +59,10 @@ class AuditdatDatabase {
     await db.execute(NoteRepo.createTable());
     await db.execute(TemplateCategoryRepo.createTable());
 
+    await db.execute(TemplateResponseGroupRepo.createTable());
+    await db.execute(TemplateResponseRepo.createTable());
+    await db.execute(TemplateFieldTypeRepo.createTable());
+
     await db.execute(TemplateVersionRepo.createTable());
     await db.execute(TemplatePageRepo.createTable());
     await db.execute(TemplateComponentRepo.createTable());
@@ -67,6 +77,13 @@ class AuditdatDatabase {
       await db.execute(
           "DROP TABLE IF EXISTS ${SyncLastUpdatedTableKeys.tableName}");
       await db.execute("DROP TABLE IF EXISTS $tableNotes");
+
+      await db.execute(
+          "DROP TABLE IF EXISTS ${TemplateResponseGroupTableKeys.tableName}");
+      await db.execute(
+          "DROP TABLE IF EXISTS ${TemplateResponseTableKeys.tableName}");
+      await db.execute(
+          "DROP TABLE IF EXISTS ${TemplateFieldTypeTableKeys.tableName}");
       await db.execute(
           "DROP TABLE IF EXISTS ${TemplateCategoryTableKeys.tableName}");
       await db.execute(

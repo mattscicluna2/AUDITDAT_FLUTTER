@@ -9,14 +9,20 @@ import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/model/template_check.dart';
 import 'package:auditdat/db/model/template_component.dart';
 import 'package:auditdat/db/model/template_field.dart';
+import 'package:auditdat/db/model/template_field_type.dart';
 import 'package:auditdat/db/model/template_page.dart';
+import 'package:auditdat/db/model/template_response.dart';
+import 'package:auditdat/db/model/template_response_group.dart';
 import 'package:auditdat/db/model/template_section.dart';
 import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/db/repo/sync_last_updated_repo.dart';
 import 'package:auditdat/db/repo/template_check_repo.dart';
 import 'package:auditdat/db/repo/template_component_repo.dart';
 import 'package:auditdat/db/repo/template_field_repo.dart';
+import 'package:auditdat/db/repo/template_field_type_repo.dart';
 import 'package:auditdat/db/repo/template_page_repo.dart';
+import 'package:auditdat/db/repo/template_response_group_repo.dart';
+import 'package:auditdat/db/repo/template_response_repo.dart';
 import 'package:auditdat/db/repo/template_section_repo.dart';
 import 'package:auditdat/db/repo/template_version_repo.dart';
 import 'package:auditdat/dto/TemplateDto.dart';
@@ -111,8 +117,8 @@ class TemplatesService {
       Map<String, dynamic> decodedResponse = json.decode(response.body);
 
       if (decodedResponse['success']) {
-        Database db = await AuditdatDatabase.instance.database;
         var data = decodedResponse['data'];
+        Database db = await AuditdatDatabase.instance.database;
 
         data['pages'].forEach((page) async {
           log(page['name']);
@@ -129,7 +135,7 @@ class TemplatesService {
                 await TemplateComponentRepo.instance.create(TemplateComponent(
                     id: component['id'],
                     templateVersionId: component['template_version_id'],
-                    pageId: component['page_id'],
+                    pageId: savedPage.id,
                     parentSectionId: component['parent_section_id'],
                     sectionId: component['section_id'],
                     checkId: component['check_id'],
@@ -146,6 +152,24 @@ class TemplatesService {
                   mediaRequired: component['check']['media_required'] == 1
                       ? true
                       : false));
+
+              //Save responses if not already there
+              TemplateResponseGroup savedGroup = await TemplateResponseGroupRepo
+                  .instance
+                  .create(TemplateResponseGroup(
+                      id: component['check']['response_group']['id']));
+
+              component['check']['response_group']['responses']
+                  .forEach((response) async {
+                await TemplateResponseRepo.instance.create(TemplateResponse(
+                    id: response['id'],
+                    groupId: savedGroup.id,
+                    response: response['response'],
+                    colour: response['colour'],
+                    fail: response['fail'] == 1 ? true : false,
+                    score: response['score'],
+                    index: response['order']));
+              });
             } else if (savedComponent.fieldId != null) {
               await TemplateFieldRepo.instance.create(TemplateField(
                   id: component['field']['id'],
@@ -155,6 +179,10 @@ class TemplatesService {
                   mediaRequired: component['field']['media_required'] == 1
                       ? true
                       : false));
+
+              await TemplateFieldTypeRepo.instance.create(TemplateFieldType(
+                  id: component['field']['type']['id'],
+                  name: component['field']['type']['type']));
             } else if (savedComponent.sectionId != null) {
               await TemplateSectionRepo.instance.create(TemplateSection(
                   id: component['section']['id'],
@@ -173,6 +201,7 @@ class TemplatesService {
 
         await TemplateVersionRepo.instance
             .update(version.copy(downloaded: true));
+
         return true;
       }
     } else {
