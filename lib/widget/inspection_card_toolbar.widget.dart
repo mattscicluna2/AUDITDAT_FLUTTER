@@ -1,6 +1,5 @@
 import 'package:auditdat/changenotifier/model/app_settings.dart';
 import 'package:auditdat/constants/color_constants.dart';
-import 'package:auditdat/page/camera_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +16,6 @@ class InspectionCardToolbar extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () async {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => CameraPage(
-                      camera: appSettings.cameras.first,
-                    )));
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
