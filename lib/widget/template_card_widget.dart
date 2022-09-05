@@ -32,18 +32,11 @@ class _TemplateCardWidgetState extends State<TemplateCardWidget> {
 
     log('downloadTemplate');
 
-    // if (!sync) {
     bool synced = await TemplatesService.instance
         .getTemplateData(context, widget.template);
 
-    setState(() => downloaded = true);
-    // } else {
-    //   _templates =
-    //   await TemplatesService.instance.sync(context, widget.category);
-    // }
+    setState(() => downloaded = synced);
 
-    // setState(() => templates = _templates);
-    //
     setState(() => isLoading = false);
   }
 
@@ -52,7 +45,7 @@ class _TemplateCardWidgetState extends State<TemplateCardWidget> {
     log(widget.template.toJson().toString());
     return GestureDetector(
       onTap: () async {
-        if (widget.template.downloaded) {
+        if (downloaded) {
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const InspectionPage()));
         } else {
