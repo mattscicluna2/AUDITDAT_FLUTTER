@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 class SyncLastUpdatedRepo {
   static final SyncLastUpdatedRepo instance = SyncLastUpdatedRepo._init();
-  final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
+  final AuditdatDatabase updatDatabaseInstance = AuditdatDatabase.instance;
 
   SyncLastUpdatedRepo._init();
 

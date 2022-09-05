@@ -7,14 +7,14 @@ import '../auditdat_database.dart';
 
 class TemplatePageRepo {
   static final TemplatePageRepo instance = TemplatePageRepo._init();
-  final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
+  final AuditdatDatabase updatDatabaseInstance = AuditdatDatabase.instance;
 
   TemplatePageRepo._init();
 
   static String createTable() {
     return '''
       CREATE TABLE ${TemplatePageTableKeys.tableName} ( 
-        ${TemplatePageTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
+        ${TemplatePageTableKeys.id} INTEGER PRIMARY KEY, 
         ${TemplatePageTableKeys.templateVersionId} INTEGER NOT NULL,
         ${TemplatePageTableKeys.name} TEXT NOT NULL,
         ${TemplatePageTableKeys.mainPage} INTEGER NOT NULL,
@@ -26,8 +26,7 @@ class TemplatePageRepo {
   Future<TemplatePage> create(TemplatePage page) async {
     final db = await updatDatabaseInstance.database;
 
-    final id = await db.insert(
-        TemplatePageTableKeys.tableName, page.toJson(),
+    final id = await db.insert(TemplatePageTableKeys.tableName, page.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     return page.copy(id: id);
   }

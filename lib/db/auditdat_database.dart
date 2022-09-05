@@ -23,12 +23,12 @@ import 'package:sqflite/sqflite.dart';
 
 import 'model/note.dart';
 
-class UpdatDatabase {
-  static final UpdatDatabase instance = UpdatDatabase._init();
+class AuditdatDatabase {
+  static final AuditdatDatabase instance = AuditdatDatabase._init();
 
   static Database? _database;
 
-  UpdatDatabase._init();
+  AuditdatDatabase._init();
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -69,12 +69,18 @@ class UpdatDatabase {
       await db.execute("DROP TABLE IF EXISTS $tableNotes");
       await db.execute(
           "DROP TABLE IF EXISTS ${TemplateCategoryTableKeys.tableName}");
-      await db.execute("DROP TABLE IF EXISTS ${TemplateTableKeys.tableName}");
-      await db.execute("DROP TABLE IF EXISTS ${TemplatePageTableKeys.tableName}");
-      await db.execute("DROP TABLE IF EXISTS ${TemplateComponentTableKeys.tableName}");
-      await db.execute("DROP TABLE IF EXISTS ${TemplateSectionTableKeys.tableName}");
-      await db.execute("DROP TABLE IF EXISTS ${TemplateCheckTableKeys.tableName}");
-      await db.execute("DROP TABLE IF EXISTS ${TemplateFieldTableKeys.tableName}");
+      await db.execute(
+          "DROP TABLE IF EXISTS ${TemplateVersionTableKeys.tableName}");
+      await db
+          .execute("DROP TABLE IF EXISTS ${TemplatePageTableKeys.tableName}");
+      await db.execute(
+          "DROP TABLE IF EXISTS ${TemplateComponentTableKeys.tableName}");
+      await db.execute(
+          "DROP TABLE IF EXISTS ${TemplateSectionTableKeys.tableName}");
+      await db
+          .execute("DROP TABLE IF EXISTS ${TemplateCheckTableKeys.tableName}");
+      await db
+          .execute("DROP TABLE IF EXISTS ${TemplateFieldTableKeys.tableName}");
 
       await _createDB(db, newVersion);
     }

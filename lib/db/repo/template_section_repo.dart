@@ -7,14 +7,14 @@ import '../auditdat_database.dart';
 
 class TemplateSectionRepo {
   static final TemplateSectionRepo instance = TemplateSectionRepo._init();
-  final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
+  final AuditdatDatabase updatDatabaseInstance = AuditdatDatabase.instance;
 
   TemplateSectionRepo._init();
 
   static String createTable() {
     return '''
       CREATE TABLE ${TemplateSectionTableKeys.tableName} ( 
-        ${TemplateSectionTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
+        ${TemplateSectionTableKeys.id} INTEGER PRIMARY KEY, 
         ${TemplateSectionTableKeys.name} TEXT NOT NULL,
         ${TemplateSectionTableKeys.repeat} INTEGER NOT NULL
         )

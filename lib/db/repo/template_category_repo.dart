@@ -7,14 +7,14 @@ import '../auditdat_database.dart';
 
 class TemplateCategoryRepo {
   static final TemplateCategoryRepo instance = TemplateCategoryRepo._init();
-  final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
+  final AuditdatDatabase updatDatabaseInstance = AuditdatDatabase.instance;
 
   TemplateCategoryRepo._init();
 
   static String createTable() {
     return '''
       CREATE TABLE ${TemplateCategoryTableKeys.tableName} ( 
-        ${TemplateCategoryTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
+        ${TemplateCategoryTableKeys.id} INTEGER PRIMARY KEY, 
         ${TemplateCategoryTableKeys.name} TEXT NOT NULL
         )
       ''';

@@ -1,4 +1,3 @@
-
 class TemplateCheckTableKeys {
   static const String tableName = 'template_checks';
 
@@ -46,18 +45,18 @@ class TemplateCheck {
   //TODO Relationships; Response Group
 
   static TemplateCheck fromJson(Map<String, Object?> json) => TemplateCheck(
-    id: json[TemplateCheckTableKeys.id] as int,
-    name: json[TemplateCheckTableKeys.name] as String,
-    responseGroupId: json[TemplateCheckTableKeys.responseGroupId] as int,
-    required: json[TemplateCheckTableKeys.required] as bool,
-    mediaRequired: json[TemplateCheckTableKeys.mediaRequired] as bool,
-  );
+        id: json[TemplateCheckTableKeys.id] as int,
+        name: json[TemplateCheckTableKeys.name] as String,
+        responseGroupId: json[TemplateCheckTableKeys.responseGroupId] as int,
+        required: json[TemplateCheckTableKeys.required] as bool,
+        mediaRequired: json[TemplateCheckTableKeys.mediaRequired] as bool,
+      );
 
   Map<String, Object?> toJson() => {
-    TemplateCheckTableKeys.id: id,
-    TemplateCheckTableKeys.name: name,
-    TemplateCheckTableKeys.responseGroupId: responseGroupId,
-    TemplateCheckTableKeys.required: required,
-    TemplateCheckTableKeys.mediaRequired: mediaRequired,
-  };
+        TemplateCheckTableKeys.id: id,
+        TemplateCheckTableKeys.name: name,
+        TemplateCheckTableKeys.responseGroupId: responseGroupId,
+        TemplateCheckTableKeys.required: required ? 1 : 0,
+        TemplateCheckTableKeys.mediaRequired: mediaRequired ? 1 : 0,
+      };
 }

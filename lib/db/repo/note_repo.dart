@@ -1,19 +1,18 @@
 import 'package:auditdat/db/model/note.dart';
-import 'package:flutter/material.dart';
 
 import '../auditdat_database.dart';
 
 class NoteRepo {
   static final NoteRepo instance = NoteRepo._init();
-  final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
+  final AuditdatDatabase updatDatabaseInstance = AuditdatDatabase.instance;
 
   NoteRepo._init();
 
   static String createTable() {
     return '''
       CREATE TABLE $tableNotes ( 
-        ${NoteFields.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
-        ${NoteFields.isImportant} BOOLEAN NOT NULL,
+        ${NoteFields.id} INTEGER PRIMARY KEY, 
+        ${NoteFields.isImportant} INTEGER NOT NULL,
         ${NoteFields.number} INTEGER NOT NULL,
         ${NoteFields.title} TEXT NOT NULL,
         ${NoteFields.description} TEXT NOT NULL,

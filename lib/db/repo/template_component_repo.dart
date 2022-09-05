@@ -7,21 +7,21 @@ import '../auditdat_database.dart';
 
 class TemplateComponentRepo {
   static final TemplateComponentRepo instance = TemplateComponentRepo._init();
-  final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
+  final AuditdatDatabase updatDatabaseInstance = AuditdatDatabase.instance;
 
   TemplateComponentRepo._init();
 
   static String createTable() {
     return '''
       CREATE TABLE ${TemplateComponentTableKeys.tableName} ( 
-        ${TemplateComponentTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
+        ${TemplateComponentTableKeys.id} INTEGER PRIMARY KEY, 
         ${TemplateComponentTableKeys.templateVersionId} INTEGER NOT NULL,
         ${TemplateComponentTableKeys.pageId} INTEGER NOT NULL,
-        ${TemplateComponentTableKeys.parentSectionId} INTEGER,
-        ${TemplateComponentTableKeys.sectionId} INTEGER,
-        ${TemplateComponentTableKeys.checkId} INTEGER,
-        ${TemplateComponentTableKeys.fieldId} INTEGER,
-        ${TemplateComponentTableKeys.note} STRING,
+        ${TemplateComponentTableKeys.parentSectionId} INTEGER NULL,
+        ${TemplateComponentTableKeys.sectionId} INTEGER NULL,
+        ${TemplateComponentTableKeys.checkId} INTEGER NULL,
+        ${TemplateComponentTableKeys.fieldId} INTEGER NULL,
+        ${TemplateComponentTableKeys.note} STRING NULL,
         ${TemplateComponentTableKeys.index} INTEGER NOT NULL
         )
       ''';

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:auditdat/constants/color_constants.dart';
 import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/page/inspection_page.dart';
+import 'package:auditdat/service/templates_service.dart';
 import 'package:flutter/material.dart';
 
 class TemplateCardWidget extends StatefulWidget {
@@ -16,10 +17,13 @@ class TemplateCardWidget extends StatefulWidget {
 
 class _TemplateCardWidgetState extends State<TemplateCardWidget> {
   bool isLoading = false;
+  bool downloaded = false;
 
   @override
   void initState() {
     super.initState();
+
+    downloaded = widget.template.downloaded;
   }
 
   Future downloadTemplate() async {
@@ -29,8 +33,10 @@ class _TemplateCardWidgetState extends State<TemplateCardWidget> {
     log('downloadTemplate');
 
     // if (!sync) {
-    //   _templates =
-    //   await TemplateVersionRepo.instance.getAllByCategory(widget.category.id);
+    bool synced = await TemplatesService.instance
+        .getTemplateData(context, widget.template);
+
+    setState(() => downloaded = true);
     // } else {
     //   _templates =
     //   await TemplatesService.instance.sync(context, widget.category);
@@ -54,7 +60,7 @@ class _TemplateCardWidgetState extends State<TemplateCardWidget> {
         }
       },
       child: Card(
-        color: !widget.template.downloaded
+        color: !downloaded
             ? ColorConstants.white.withOpacity(0.5)
             : ColorConstants.white.withOpacity(1),
         // shape: RoundedRectangleBorder(

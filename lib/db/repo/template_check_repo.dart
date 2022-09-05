@@ -7,14 +7,14 @@ import '../auditdat_database.dart';
 
 class TemplateCheckRepo {
   static final TemplateCheckRepo instance = TemplateCheckRepo._init();
-  final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
+  final AuditdatDatabase updatDatabaseInstance = AuditdatDatabase.instance;
 
   TemplateCheckRepo._init();
 
   static String createTable() {
     return '''
       CREATE TABLE ${TemplateCheckTableKeys.tableName} ( 
-        ${TemplateCheckTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
+        ${TemplateCheckTableKeys.id} INTEGER PRIMARY KEY, 
         ${TemplateCheckTableKeys.name} TEXT NOT NULL,
         ${TemplateCheckTableKeys.responseGroupId} INTEGER NOT NULL,
         ${TemplateCheckTableKeys.required} INTEGER NOT NULL,
@@ -26,8 +26,7 @@ class TemplateCheckRepo {
   Future<TemplateCheck> create(TemplateCheck check) async {
     final db = await updatDatabaseInstance.database;
 
-    final id = await db.insert(
-        TemplateCheckTableKeys.tableName, check.toJson(),
+    final id = await db.insert(TemplateCheckTableKeys.tableName, check.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     return check.copy(id: id);
   }

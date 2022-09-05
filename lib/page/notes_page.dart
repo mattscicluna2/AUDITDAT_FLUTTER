@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:auditdat/db/repo/note_repo.dart';
 import 'package:auditdat/db/auditdat_database.dart';
+import 'package:auditdat/db/repo/note_repo.dart';
 import 'package:auditdat/page/note_detail_page.dart';
 import 'package:auditdat/widget/note_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ class _NotesPageState extends State<NotesPage> {
 
   @override
   void dispose() {
-    UpdatDatabase.instance.close();
+    AuditdatDatabase.instance.close();
 
     super.dispose();
   }

@@ -45,18 +45,18 @@ class TemplateField {
   //TODO Relationships; Type
 
   static TemplateField fromJson(Map<String, Object?> json) => TemplateField(
-    id: json[TemplateFieldTableKeys.id] as int,
-    name: json[TemplateFieldTableKeys.name] as String,
-    typeId: json[TemplateFieldTableKeys.typeId] as int,
-    required: json[TemplateFieldTableKeys.required] as bool,
-    mediaRequired: json[TemplateFieldTableKeys.mediaRequired] as bool,
-  );
+        id: json[TemplateFieldTableKeys.id] as int,
+        name: json[TemplateFieldTableKeys.name] as String,
+        typeId: json[TemplateFieldTableKeys.typeId] as int,
+        required: json[TemplateFieldTableKeys.required] as bool,
+        mediaRequired: json[TemplateFieldTableKeys.mediaRequired] as bool,
+      );
 
   Map<String, Object?> toJson() => {
-    TemplateFieldTableKeys.id: id,
-    TemplateFieldTableKeys.name: name,
-    TemplateFieldTableKeys.typeId: typeId,
-    TemplateFieldTableKeys.required: required,
-    TemplateFieldTableKeys.mediaRequired: mediaRequired,
-  };
+        TemplateFieldTableKeys.id: id,
+        TemplateFieldTableKeys.name: name,
+        TemplateFieldTableKeys.typeId: typeId,
+        TemplateFieldTableKeys.required: required ? 1 : 0,
+        TemplateFieldTableKeys.mediaRequired: mediaRequired ? 1 : 0,
+      };
 }

@@ -73,46 +73,50 @@ class TemplateComponent {
         index: index,
       );
 
-
   Future<TemplateVersion?> version() async =>
       await TemplateVersionRepo.instance.get(templateVersionId);
 
   Future<TemplatePage?> page() async =>
       await TemplatePageRepo.instance.get(pageId);
 
-  Future<TemplateSection?> parentSection() async =>
-      parentSectionId != null ? await TemplateSectionRepo.instance.get(parentSectionId!): null;
+  Future<TemplateSection?> parentSection() async => parentSectionId != null
+      ? await TemplateSectionRepo.instance.get(parentSectionId!)
+      : null;
 
-  Future<TemplateSection?> section() async =>
-      sectionId != null ? await TemplateSectionRepo.instance.get(sectionId!): null;
+  Future<TemplateSection?> section() async => sectionId != null
+      ? await TemplateSectionRepo.instance.get(sectionId!)
+      : null;
 
   Future<TemplateField?> field() async =>
-      fieldId != null ? await TemplateFieldRepo.instance.get(fieldId!): null;
+      fieldId != null ? await TemplateFieldRepo.instance.get(fieldId!) : null;
 
   Future<TemplateCheck?> check() async =>
-      checkId != null ? await TemplateCheckRepo.instance.get(checkId!): null;
+      checkId != null ? await TemplateCheckRepo.instance.get(checkId!) : null;
 
-
-  static TemplateComponent fromJson(Map<String, Object?> json) => TemplateComponent(
-    id: json[TemplateComponentTableKeys.id] as int,
-    templateVersionId: json[TemplateComponentTableKeys.templateVersionId] as int,
-    pageId: json[TemplateComponentTableKeys.pageId] as int,
-    parentSectionId: json[TemplateComponentTableKeys.parentSectionId] as int?,
-    sectionId: json[TemplateComponentTableKeys.sectionId] as int?,
-    checkId: json[TemplateComponentTableKeys.checkId] as int?,
-    fieldId: json[TemplateComponentTableKeys.fieldId] as int?,
-    note: json[TemplateComponentTableKeys.note] as String?,
-    index: json[TemplateComponentTableKeys.index] as int,
-  );
+  static TemplateComponent fromJson(Map<String, Object?> json) =>
+      TemplateComponent(
+        id: json[TemplateComponentTableKeys.id] as int,
+        templateVersionId:
+            json[TemplateComponentTableKeys.templateVersionId] as int,
+        pageId: json[TemplateComponentTableKeys.pageId] as int,
+        parentSectionId:
+            json[TemplateComponentTableKeys.parentSectionId] as int?,
+        sectionId: json[TemplateComponentTableKeys.sectionId] as int?,
+        checkId: json[TemplateComponentTableKeys.checkId] as int?,
+        fieldId: json[TemplateComponentTableKeys.fieldId] as int?,
+        note: json[TemplateComponentTableKeys.note] as String?,
+        index: json[TemplateComponentTableKeys.index] as int,
+      );
 
   Map<String, Object?> toJson() => {
-    TemplateComponentTableKeys.id: id,
-    TemplateComponentTableKeys.templateVersionId: templateVersionId,
-    TemplateComponentTableKeys.parentSectionId: parentSectionId,
-    TemplateComponentTableKeys.sectionId: sectionId,
-    TemplateComponentTableKeys.checkId: checkId,
-    TemplateComponentTableKeys.fieldId: fieldId,
-    TemplateComponentTableKeys.note: note,
-    TemplateComponentTableKeys.index: index,
-  };
+        TemplateComponentTableKeys.id: id,
+        TemplateComponentTableKeys.templateVersionId: templateVersionId,
+        TemplateComponentTableKeys.pageId: pageId,
+        TemplateComponentTableKeys.parentSectionId: parentSectionId,
+        TemplateComponentTableKeys.sectionId: sectionId,
+        TemplateComponentTableKeys.checkId: checkId,
+        TemplateComponentTableKeys.fieldId: fieldId,
+        TemplateComponentTableKeys.note: note,
+        TemplateComponentTableKeys.index: index,
+      };
 }

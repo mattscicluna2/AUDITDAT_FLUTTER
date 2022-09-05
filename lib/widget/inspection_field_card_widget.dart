@@ -9,14 +9,14 @@ class InspectionFieldCardWidget extends StatelessWidget {
     return InspectionCommonCardWidget(
       title: "Are you sure you want to do this?",
       note: "This is a test Note",
-      body:  TextField(
-          style: TextStyle(fontSize: 15, color: Colors.black),
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            border: OutlineInputBorder(),
-            hintText: 'Field',
-          ),
+      body: TextField(
+        style: TextStyle(fontSize: 15, color: Colors.black),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          border: OutlineInputBorder(),
+          hintText: 'Field',
         ),
+      ),
     );
   }
 }

@@ -5,19 +5,19 @@ import '../auditdat_database.dart';
 
 class TemplateVersionRepo {
   static final TemplateVersionRepo instance = TemplateVersionRepo._init();
-  final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
+  final AuditdatDatabase updatDatabaseInstance = AuditdatDatabase.instance;
 
   TemplateVersionRepo._init();
 
   static String createTable() {
     return '''
-      CREATE TABLE ${TemplateTableKeys.tableName} ( 
-        ${TemplateTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
-        ${TemplateTableKeys.templateId} INTEGER NOT NULL,
-        ${TemplateTableKeys.categoryId} INTEGER NOT NULL,
-        ${TemplateTableKeys.name} TEXT NOT NULL,
-        ${TemplateTableKeys.version} TEXT NOT NULL,
-        ${TemplateTableKeys.downloaded} BOOLEAN NOT NULL
+      CREATE TABLE ${TemplateVersionTableKeys.tableName} ( 
+        ${TemplateVersionTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
+        ${TemplateVersionTableKeys.templateId} INTEGER NOT NULL,
+        ${TemplateVersionTableKeys.categoryId} INTEGER NOT NULL,
+        ${TemplateVersionTableKeys.name} TEXT NOT NULL,
+        ${TemplateVersionTableKeys.version} TEXT NOT NULL,
+        ${TemplateVersionTableKeys.downloaded} INTEGER NOT NULL
         )
       ''';
   }
@@ -25,7 +25,8 @@ class TemplateVersionRepo {
   Future<TemplateVersion> create(TemplateVersion template) async {
     final db = await updatDatabaseInstance.database;
 
-    final id = await db.insert(TemplateTableKeys.tableName, template.toJson(),
+    final id = await db.insert(
+        TemplateVersionTableKeys.tableName, template.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     return template.copy(id: id);
   }
@@ -34,9 +35,9 @@ class TemplateVersionRepo {
     final db = await updatDatabaseInstance.database;
 
     final maps = await db.query(
-      TemplateTableKeys.tableName,
-      columns: TemplateTableKeys.values,
-      where: '${TemplateTableKeys.id} = ?',
+      TemplateVersionTableKeys.tableName,
+      columns: TemplateVersionTableKeys.values,
+      where: '${TemplateVersionTableKeys.id} = ?',
       whereArgs: [id],
     );
 
@@ -51,9 +52,9 @@ class TemplateVersionRepo {
     final db = await updatDatabaseInstance.database;
 
     final result = await db.query(
-      TemplateTableKeys.tableName,
-      columns: TemplateTableKeys.values,
-      where: '${TemplateTableKeys.categoryId} = ?',
+      TemplateVersionTableKeys.tableName,
+      columns: TemplateVersionTableKeys.values,
+      where: '${TemplateVersionTableKeys.categoryId} = ?',
       whereArgs: [categoryId],
     );
 
@@ -67,7 +68,7 @@ class TemplateVersionRepo {
   Future<List<TemplateVersion>> getAll() async {
     final db = await updatDatabaseInstance.database;
 
-    final result = await db.query(TemplateTableKeys.tableName);
+    final result = await db.query(TemplateVersionTableKeys.tableName);
 
     return result.map((json) => TemplateVersion.fromJson(json)).toList();
   }
@@ -76,9 +77,9 @@ class TemplateVersionRepo {
     final db = await updatDatabaseInstance.database;
 
     return db.update(
-      TemplateTableKeys.tableName,
+      TemplateVersionTableKeys.tableName,
       template.toJson(),
-      where: '${TemplateTableKeys.id} = ?',
+      where: '${TemplateVersionTableKeys.id} = ?',
       whereArgs: [template.id],
     );
   }
@@ -87,8 +88,8 @@ class TemplateVersionRepo {
     final db = await updatDatabaseInstance.database;
 
     return await db.delete(
-      TemplateTableKeys.tableName,
-      where: '${TemplateTableKeys.id} = ?',
+      TemplateVersionTableKeys.tableName,
+      where: '${TemplateVersionTableKeys.id} = ?',
       whereArgs: [id],
     );
   }
@@ -99,14 +100,14 @@ class TemplateVersionRepo {
 
     if (ids.length > 0) {
       return await db.delete(
-        TemplateTableKeys.tableName,
+        TemplateVersionTableKeys.tableName,
         where:
             'category_id = ? AND template_id NOT IN (${ids.map((_) => '?').join(', ')})',
         whereArgs: [categoryId] + ids,
       );
     } else {
       return await db.delete(
-        TemplateTableKeys.tableName,
+        TemplateVersionTableKeys.tableName,
         where: 'category_id = ?',
         whereArgs: [categoryId],
       );

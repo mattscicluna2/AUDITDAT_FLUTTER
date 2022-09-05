@@ -1,4 +1,3 @@
-
 import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/db/repo/template_version_repo.dart';
 
@@ -51,18 +50,18 @@ class TemplatePage {
       await TemplateVersionRepo.instance.get(templateVersionId);
 
   static TemplatePage fromJson(Map<String, Object?> json) => TemplatePage(
-    id: json[TemplatePageTableKeys.id] as int,
-    templateVersionId: json[TemplatePageTableKeys.templateVersionId] as int,
-    name: json[TemplatePageTableKeys.name] as String,
-    mainPage: json[TemplatePageTableKeys.mainPage] as bool,
-    index: json[TemplatePageTableKeys.index] as int,
-  );
+        id: json[TemplatePageTableKeys.id] as int,
+        templateVersionId: json[TemplatePageTableKeys.templateVersionId] as int,
+        name: json[TemplatePageTableKeys.name] as String,
+        mainPage: json[TemplatePageTableKeys.mainPage] as bool,
+        index: json[TemplatePageTableKeys.index] as int,
+      );
 
   Map<String, Object?> toJson() => {
-    TemplatePageTableKeys.id: id,
-    TemplatePageTableKeys.templateVersionId: templateVersionId,
-    TemplatePageTableKeys.name: name,
-    TemplatePageTableKeys.mainPage: mainPage,
-    TemplatePageTableKeys.index: index,
-  };
+        TemplatePageTableKeys.id: id,
+        TemplatePageTableKeys.templateVersionId: templateVersionId,
+        TemplatePageTableKeys.name: name,
+        TemplatePageTableKeys.mainPage: mainPage ? 1 : 0,
+        TemplatePageTableKeys.index: index,
+      };
 }

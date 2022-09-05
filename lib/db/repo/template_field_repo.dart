@@ -7,14 +7,14 @@ import '../auditdat_database.dart';
 
 class TemplateFieldRepo {
   static final TemplateFieldRepo instance = TemplateFieldRepo._init();
-  final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
+  final AuditdatDatabase updatDatabaseInstance = AuditdatDatabase.instance;
 
   TemplateFieldRepo._init();
 
   static String createTable() {
     return '''
       CREATE TABLE ${TemplateFieldTableKeys.tableName} ( 
-        ${TemplateFieldTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
+        ${TemplateFieldTableKeys.id} INTEGER PRIMARY KEY, 
         ${TemplateFieldTableKeys.name} TEXT NOT NULL,
         ${TemplateFieldTableKeys.typeId} INTEGER NOT NULL,
         ${TemplateFieldTableKeys.required} INTEGER NOT NULL,
@@ -26,8 +26,7 @@ class TemplateFieldRepo {
   Future<TemplateField> create(TemplateField field) async {
     final db = await updatDatabaseInstance.database;
 
-    final id = await db.insert(
-        TemplateFieldTableKeys.tableName, field.toJson(),
+    final id = await db.insert(TemplateFieldTableKeys.tableName, field.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
     return field.copy(id: id);
   }
