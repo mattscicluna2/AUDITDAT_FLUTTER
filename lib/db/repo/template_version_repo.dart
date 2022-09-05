@@ -16,7 +16,8 @@ class TemplateVersionRepo {
         ${TemplateTableKeys.templateId} INTEGER NOT NULL,
         ${TemplateTableKeys.categoryId} INTEGER NOT NULL,
         ${TemplateTableKeys.name} TEXT NOT NULL,
-        ${TemplateTableKeys.version} TEXT NOT NULL
+        ${TemplateTableKeys.version} TEXT NOT NULL,
+        ${TemplateTableKeys.downloaded} BOOLEAN NOT NULL
         )
       ''';
   }

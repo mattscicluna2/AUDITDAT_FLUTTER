@@ -1,12 +1,13 @@
+import 'dart:developer';
+
 import 'package:auditdat/constants/color_constants.dart';
-import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/page/inspection_page.dart';
 import 'package:flutter/material.dart';
 
 class TemplateCardWidget extends StatefulWidget {
   final TemplateVersion template;
-  const TemplateCardWidget({Key? key, required TemplateVersion this.template})
+  const TemplateCardWidget({Key? key, required this.template})
       : super(key: key);
 
   @override
@@ -14,38 +15,51 @@ class TemplateCardWidget extends StatefulWidget {
 }
 
 class _TemplateCardWidgetState extends State<TemplateCardWidget> {
-  bool isLoading = true;
-  late List<TemplateCategory> categories;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-
-    getTemplates();
   }
 
-  Future getTemplates() async {
+  Future downloadTemplate() async {
     setState(() => isLoading = true);
+    //
 
-    // await TemplatesService.instance.sync(context, widget.category);
+    log('downloadTemplate');
 
+    // if (!sync) {
+    //   _templates =
+    //   await TemplateVersionRepo.instance.getAllByCategory(widget.category.id);
+    // } else {
+    //   _templates =
+    //   await TemplatesService.instance.sync(context, widget.category);
+    // }
+
+    // setState(() => templates = _templates);
+    //
     setState(() => isLoading = false);
   }
 
   @override
   Widget build(BuildContext context) {
+    log(widget.template.toJson().toString());
     return GestureDetector(
       onTap: () async {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const InspectionPage()));
+        if (widget.template.downloaded) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const InspectionPage()));
+        } else {
+          await downloadTemplate();
+        }
       },
       child: Card(
-        color: isLoading
+        color: !widget.template.downloaded
             ? ColorConstants.white.withOpacity(0.5)
             : ColorConstants.white.withOpacity(1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.circular(10),
+        // ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

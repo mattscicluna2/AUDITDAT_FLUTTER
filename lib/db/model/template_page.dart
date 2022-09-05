@@ -1,6 +1,6 @@
 
 import 'package:auditdat/db/model/template_version.dart';
-import 'package:auditdat/db/repo/template_repo.dart';
+import 'package:auditdat/db/repo/template_version_repo.dart';
 
 class TemplatePageTableKeys {
   static const String tableName = 'template_pages';

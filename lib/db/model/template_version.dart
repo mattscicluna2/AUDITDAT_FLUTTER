@@ -9,7 +9,8 @@ class TemplateTableKeys {
     categoryId,
     name,
     version,
-    templateId
+    templateId,
+    downloaded,
   ];
 
   static const String id = 'id';
@@ -17,6 +18,7 @@ class TemplateTableKeys {
   static const String templateId = 'template_id';
   static const String name = 'name';
   static const String version = 'version';
+  static const String downloaded = 'downloaded';
 }
 
 class TemplateVersion {
@@ -25,6 +27,7 @@ class TemplateVersion {
   final int categoryId;
   final String name;
   final String version;
+  final bool downloaded;
 
   const TemplateVersion({
     required this.id,
@@ -32,18 +35,19 @@ class TemplateVersion {
     required this.categoryId,
     required this.name,
     required this.version,
+    this.downloaded = false,
   });
 
   TemplateVersion copy({
     int? id,
-    String? name,
   }) =>
       TemplateVersion(
         id: id ?? this.id,
-        templateId: this.templateId,
-        categoryId: this.categoryId,
-        name: this.name,
-        version: this.version,
+        templateId: templateId,
+        categoryId: categoryId,
+        name: name,
+        version: version,
+        downloaded: downloaded,
       );
 
   //Category Relationship
@@ -56,6 +60,7 @@ class TemplateVersion {
         categoryId: json[TemplateTableKeys.categoryId] as int,
         name: json[TemplateTableKeys.name] as String,
         version: json[TemplateTableKeys.version] as String,
+        downloaded: json[TemplateTableKeys.downloaded] == 1 ? true : false,
       );
 
   Map<String, Object?> toJson() => {
@@ -64,5 +69,6 @@ class TemplateVersion {
         TemplateTableKeys.categoryId: categoryId,
         TemplateTableKeys.name: name,
         TemplateTableKeys.version: version,
+        TemplateTableKeys.downloaded: downloaded,
       };
 }

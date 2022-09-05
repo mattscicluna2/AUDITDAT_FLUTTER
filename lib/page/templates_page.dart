@@ -1,7 +1,7 @@
 import 'package:auditdat/changenotifier/model/app_settings.dart';
 import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/model/template_version.dart';
-import 'package:auditdat/db/repo/template_repo.dart';
+import 'package:auditdat/db/repo/template_version_repo.dart';
 import 'package:auditdat/layout/base_page.dart';
 import 'package:auditdat/service/templates_service.dart';
 import 'package:auditdat/widget/template_card_widget.dart';

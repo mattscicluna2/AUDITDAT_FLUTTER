@@ -7,7 +7,7 @@ import 'package:auditdat/db/model/sync_last_updated.dart';
 import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/db/repo/sync_last_updated_repo.dart';
-import 'package:auditdat/db/repo/template_repo.dart';
+import 'package:auditdat/db/repo/template_version_repo.dart';
 import 'package:auditdat/dto/TemplateDto.dart';
 import 'package:auditdat/service/auth_service.dart';
 import 'package:flutter/material.dart';

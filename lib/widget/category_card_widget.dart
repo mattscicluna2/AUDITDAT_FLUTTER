@@ -22,6 +22,7 @@ class _CategoryCardWidgetState extends State<CategoryCardWidget> {
     super.initState();
 
     getTemplates();
+    getTemplates();
   }
 
   Future getTemplates() async {

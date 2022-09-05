@@ -6,8 +6,8 @@ import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/db/repo/template_check_repo.dart';
 import 'package:auditdat/db/repo/template_field_repo.dart';
 import 'package:auditdat/db/repo/template_page_repo.dart';
-import 'package:auditdat/db/repo/template_repo.dart';
 import 'package:auditdat/db/repo/template_section_repo.dart';
+import 'package:auditdat/db/repo/template_version_repo.dart';
 
 class TemplateComponentTableKeys {
   static const String tableName = 'template_components';
@@ -97,11 +97,11 @@ class TemplateComponent {
     id: json[TemplateComponentTableKeys.id] as int,
     templateVersionId: json[TemplateComponentTableKeys.templateVersionId] as int,
     pageId: json[TemplateComponentTableKeys.pageId] as int,
-    parentSectionId: json[TemplateComponentTableKeys.parentSectionId] as int,
-    sectionId: json[TemplateComponentTableKeys.sectionId] as int,
-    checkId: json[TemplateComponentTableKeys.checkId] as int,
-    fieldId: json[TemplateComponentTableKeys.fieldId] as int,
-    note: json[TemplateComponentTableKeys.note] as String,
+    parentSectionId: json[TemplateComponentTableKeys.parentSectionId] as int?,
+    sectionId: json[TemplateComponentTableKeys.sectionId] as int?,
+    checkId: json[TemplateComponentTableKeys.checkId] as int?,
+    fieldId: json[TemplateComponentTableKeys.fieldId] as int?,
+    note: json[TemplateComponentTableKeys.note] as String?,
     index: json[TemplateComponentTableKeys.index] as int,
   );
 
