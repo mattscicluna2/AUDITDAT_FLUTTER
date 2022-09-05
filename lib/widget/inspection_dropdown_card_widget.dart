@@ -31,7 +31,11 @@ class _InspectionDropdownCardWidgetState
           mode: Mode.MENU,
           items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
           selectedItem: null,
-          dropdownSearchDecoration: InputDecoration(hintText: "Customer"),
+          dropdownSearchDecoration: InputDecoration(
+            hintText: "Customer",
+            contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            border: OutlineInputBorder(),
+          ),
         ));
   }
 }

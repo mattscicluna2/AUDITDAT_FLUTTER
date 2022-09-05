@@ -1,4 +1,5 @@
 import 'package:auditdat/constants/color_constants.dart';
+import 'package:auditdat/widget/inspection_card_toolbar.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -57,48 +58,7 @@ class InspectionCommonCardWidget extends StatelessWidget {
                   : null,
             ),
             body,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-                  child: Row(
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.solidComment,
-                        size: 15,
-                        color: ColorConstants.grey,
-                      ),
-                      Text(
-                        " Add Comment",
-                        style:
-                            TextStyle(fontSize: 15, color: ColorConstants.grey),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-                  child: Row(
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.solidImage,
-                        size: 15,
-                        color: ColorConstants.grey,
-                      ),
-                      Text(
-                        " Media",
-                        textAlign: TextAlign.left,
-                        style:
-                            TextStyle(fontSize: 15, color: ColorConstants.grey),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            InspectionCardToolbar()
           ],
         ),
       ),
