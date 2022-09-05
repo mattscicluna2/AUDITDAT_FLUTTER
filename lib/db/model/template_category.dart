@@ -8,7 +8,7 @@ class TemplateCategoryTableKeys {
 
   static const List<String> values = [
     /// Add all fields
-    id, name
+    id, name, deleted
   ];
 
   static const String id = 'id';

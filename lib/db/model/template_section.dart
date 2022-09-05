@@ -1,6 +1,6 @@
 
-class TemplateTableKeys {
-  static const String tableName = 'template_fields';
+class TemplateSectionTableKeys {
+  static const String tableName = 'template_sections';
 
   static const List<String> values = [
     id,
@@ -33,17 +33,15 @@ class TemplateSection {
         repeat: repeat,
       );
 
-  //TODO Relationships; Response Group
-
   static TemplateSection fromJson(Map<String, Object?> json) => TemplateSection(
-    id: json[TemplateTableKeys.id] as int,
-    name: json[TemplateTableKeys.name] as String,
-    repeat: json[TemplateTableKeys.repeat] as bool,
+    id: json[TemplateSectionTableKeys.id] as int,
+    name: json[TemplateSectionTableKeys.name] as String,
+    repeat: json[TemplateSectionTableKeys.repeat] as bool,
   );
 
   Map<String, Object?> toJson() => {
-    TemplateTableKeys.id: id,
-    TemplateTableKeys.name: name,
-    TemplateTableKeys.repeat: repeat,
+    TemplateSectionTableKeys.id: id,
+    TemplateSectionTableKeys.name: name,
+    TemplateSectionTableKeys.repeat: repeat,
   };
 }

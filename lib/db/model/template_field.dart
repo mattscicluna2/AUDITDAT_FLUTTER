@@ -1,4 +1,4 @@
-class TemplateTableKeys {
+class TemplateFieldTableKeys {
   static const String tableName = 'template_fields';
 
   static const List<String> values = [
@@ -45,18 +45,18 @@ class TemplateField {
   //TODO Relationships; Type
 
   static TemplateField fromJson(Map<String, Object?> json) => TemplateField(
-    id: json[TemplateTableKeys.id] as int,
-    name: json[TemplateTableKeys.name] as String,
-    typeId: json[TemplateTableKeys.typeId] as int,
-    required: json[TemplateTableKeys.required] as bool,
-    mediaRequired: json[TemplateTableKeys.mediaRequired] as bool,
+    id: json[TemplateFieldTableKeys.id] as int,
+    name: json[TemplateFieldTableKeys.name] as String,
+    typeId: json[TemplateFieldTableKeys.typeId] as int,
+    required: json[TemplateFieldTableKeys.required] as bool,
+    mediaRequired: json[TemplateFieldTableKeys.mediaRequired] as bool,
   );
 
   Map<String, Object?> toJson() => {
-    TemplateTableKeys.id: id,
-    TemplateTableKeys.name: name,
-    TemplateTableKeys.typeId: typeId,
-    TemplateTableKeys.required: required,
-    TemplateTableKeys.mediaRequired: mediaRequired,
+    TemplateFieldTableKeys.id: id,
+    TemplateFieldTableKeys.name: name,
+    TemplateFieldTableKeys.typeId: typeId,
+    TemplateFieldTableKeys.required: required,
+    TemplateFieldTableKeys.mediaRequired: mediaRequired,
   };
 }

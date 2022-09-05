@@ -1,7 +1,15 @@
+import 'package:auditdat/db/model/template_check.dart';
+import 'package:auditdat/db/model/template_field.dart';
+import 'package:auditdat/db/model/template_page.dart';
+import 'package:auditdat/db/model/template_section.dart';
 import 'package:auditdat/db/model/template_version.dart';
+import 'package:auditdat/db/repo/template_check_repo.dart';
+import 'package:auditdat/db/repo/template_field_repo.dart';
+import 'package:auditdat/db/repo/template_page_repo.dart';
 import 'package:auditdat/db/repo/template_repo.dart';
+import 'package:auditdat/db/repo/template_section_repo.dart';
 
-class TemplateTableKeys {
+class TemplateComponentTableKeys {
   static const String tableName = 'template_components';
 
   static const List<String> values = [
@@ -24,7 +32,7 @@ class TemplateTableKeys {
   static const String checkId = 'check_id';
   static const String fieldId = 'field_id';
   static const String note = 'note';
-  static const String index = 'index';
+  static const String index = 'position';
 }
 
 class TemplateComponent {
@@ -65,32 +73,46 @@ class TemplateComponent {
         index: index,
       );
 
-  //Category Relationship
+
   Future<TemplateVersion?> version() async =>
       await TemplateVersionRepo.instance.get(templateVersionId);
 
-  //TODO Relationships; Page, section parentsection check, field
+  Future<TemplatePage?> page() async =>
+      await TemplatePageRepo.instance.get(pageId);
+
+  Future<TemplateSection?> parentSection() async =>
+      parentSectionId != null ? await TemplateSectionRepo.instance.get(parentSectionId!): null;
+
+  Future<TemplateSection?> section() async =>
+      sectionId != null ? await TemplateSectionRepo.instance.get(sectionId!): null;
+
+  Future<TemplateField?> field() async =>
+      fieldId != null ? await TemplateFieldRepo.instance.get(fieldId!): null;
+
+  Future<TemplateCheck?> check() async =>
+      checkId != null ? await TemplateCheckRepo.instance.get(checkId!): null;
+
 
   static TemplateComponent fromJson(Map<String, Object?> json) => TemplateComponent(
-    id: json[TemplateTableKeys.id] as int,
-    templateVersionId: json[TemplateTableKeys.templateVersionId] as int,
-    pageId: json[TemplateTableKeys.pageId] as int,
-    parentSectionId: json[TemplateTableKeys.parentSectionId] as int,
-    sectionId: json[TemplateTableKeys.sectionId] as int,
-    checkId: json[TemplateTableKeys.checkId] as int,
-    fieldId: json[TemplateTableKeys.fieldId] as int,
-    note: json[TemplateTableKeys.note] as String,
-    index: json[TemplateTableKeys.index] as int,
+    id: json[TemplateComponentTableKeys.id] as int,
+    templateVersionId: json[TemplateComponentTableKeys.templateVersionId] as int,
+    pageId: json[TemplateComponentTableKeys.pageId] as int,
+    parentSectionId: json[TemplateComponentTableKeys.parentSectionId] as int,
+    sectionId: json[TemplateComponentTableKeys.sectionId] as int,
+    checkId: json[TemplateComponentTableKeys.checkId] as int,
+    fieldId: json[TemplateComponentTableKeys.fieldId] as int,
+    note: json[TemplateComponentTableKeys.note] as String,
+    index: json[TemplateComponentTableKeys.index] as int,
   );
 
   Map<String, Object?> toJson() => {
-    TemplateTableKeys.id: id,
-    TemplateTableKeys.templateVersionId: templateVersionId,
-    TemplateTableKeys.parentSectionId: parentSectionId,
-    TemplateTableKeys.sectionId: sectionId,
-    TemplateTableKeys.checkId: checkId,
-    TemplateTableKeys.fieldId: fieldId,
-    TemplateTableKeys.note: note,
-    TemplateTableKeys.index: index,
+    TemplateComponentTableKeys.id: id,
+    TemplateComponentTableKeys.templateVersionId: templateVersionId,
+    TemplateComponentTableKeys.parentSectionId: parentSectionId,
+    TemplateComponentTableKeys.sectionId: sectionId,
+    TemplateComponentTableKeys.checkId: checkId,
+    TemplateComponentTableKeys.fieldId: fieldId,
+    TemplateComponentTableKeys.note: note,
+    TemplateComponentTableKeys.index: index,
   };
 }
