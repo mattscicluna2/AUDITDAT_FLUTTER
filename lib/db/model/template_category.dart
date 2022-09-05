@@ -36,7 +36,7 @@ class TemplateCategory {
 
   //Category Relationship
   Future<List<TemplateVersion>?> templates() async =>
-      await TemplateRepo.instance.getAllByCategory(id);
+      await TemplateVersionRepo.instance.getAllByCategory(id);
 
   static TemplateCategory fromJson(Map<String, Object?> json) =>
       TemplateCategory(

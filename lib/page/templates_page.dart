@@ -36,7 +36,7 @@ class _TemplatesPageState extends State<TemplatesPage> {
 
     if (!sync) {
       _templates =
-          await TemplateRepo.instance.getAllByCategory(widget.category.id);
+          await TemplateVersionRepo.instance.getAllByCategory(widget.category.id);
     } else {
       _templates =
           await TemplatesService.instance.sync(context, widget.category);

@@ -42,7 +42,7 @@ class UpdatDatabase {
 
     await db.execute(NoteRepo.createTable());
     await db.execute(TemplateCategoryRepo.createTable());
-    await db.execute(TemplateRepo.createTable());
+    await db.execute(TemplateVersionRepo.createTable());
   }
 
   Future _upgradeDB(Database db, int oldVersion, int newVersion) async {

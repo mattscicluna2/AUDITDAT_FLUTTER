@@ -3,11 +3,11 @@ import 'package:sqflite/sqflite.dart';
 
 import '../auditdat_database.dart';
 
-class TemplateRepo {
-  static final TemplateRepo instance = TemplateRepo._init();
+class TemplateVersionRepo {
+  static final TemplateVersionRepo instance = TemplateVersionRepo._init();
   final UpdatDatabase updatDatabaseInstance = UpdatDatabase.instance;
 
-  TemplateRepo._init();
+  TemplateVersionRepo._init();
 
   static String createTable() {
     return '''
