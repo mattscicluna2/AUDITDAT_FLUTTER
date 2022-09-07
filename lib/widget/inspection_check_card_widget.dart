@@ -8,6 +8,8 @@ class InspectionCheckCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InspectionCommonCardWidget(
+      title: "Test Check",
+      note: "Note",
       body: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
@@ -55,8 +57,6 @@ class InspectionCheckCardWidget extends StatelessWidget {
                   ]))),
         ],
       ),
-      title: "Test Check",
-      note: "Note",
     );
   }
 }

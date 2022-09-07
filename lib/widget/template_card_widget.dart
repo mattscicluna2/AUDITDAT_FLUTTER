@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auditdat/constants/color_constants.dart';
+import 'package:auditdat/db/model/template_page.dart';
 import 'package:auditdat/db/model/template_version.dart';
 import 'package:auditdat/page/inspection_page.dart';
 import 'package:auditdat/service/templates_service.dart';
@@ -18,22 +19,29 @@ class TemplateCardWidget extends StatefulWidget {
 class _TemplateCardWidgetState extends State<TemplateCardWidget> {
   bool isLoading = false;
   bool downloaded = false;
+  TemplatePage? mainPage;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
 
     downloaded = widget.template.downloaded;
+    if (downloaded) initializeMainPage();
+  }
+
+  Future initializeMainPage() async {
+    mainPage = (await widget.template.pages())[0];
+    setState(() => mainPage = mainPage);
   }
 
   Future downloadTemplate() async {
     setState(() => isLoading = true);
-    //
-
-    log('downloadTemplate');
 
     bool synced = await TemplatesService.instance
         .getTemplateData(context, widget.template);
+
+    if (synced) await initializeMainPage();
+    // mainPage = (await widget.template.pages())[0];
 
     setState(() => downloaded = synced);
 
@@ -45,9 +53,9 @@ class _TemplateCardWidgetState extends State<TemplateCardWidget> {
     log(widget.template.toJson().toString());
     return GestureDetector(
       onTap: () async {
-        if (downloaded) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const InspectionPage()));
+        if (downloaded && mainPage != null) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => InspectionPage(page: mainPage!)));
         } else {
           await downloadTemplate();
         }

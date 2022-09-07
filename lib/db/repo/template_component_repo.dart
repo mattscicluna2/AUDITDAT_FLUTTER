@@ -62,6 +62,23 @@ class TemplateComponentRepo {
     return result.map((json) => TemplateComponent.fromJson(json)).toList();
   }
 
+  Future<List<TemplateComponent>> getAllPageComponents(int pageId) async {
+    final db = await updatDatabaseInstance.database;
+
+    final result = await db.query(
+      TemplateComponentTableKeys.tableName,
+      columns: TemplateComponentTableKeys.values,
+      where: '${TemplateComponentTableKeys.pageId} = ?',
+      whereArgs: [pageId],
+    );
+
+    if (result.isNotEmpty) {
+      return result.map((json) => TemplateComponent.fromJson(json)).toList();
+    }
+
+    return [];
+  }
+
   Future<int> update(TemplateComponent component) async {
     final db = await updatDatabaseInstance.database;
 
