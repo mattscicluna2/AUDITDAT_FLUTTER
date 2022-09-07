@@ -1,5 +1,7 @@
 import 'package:auditdat/db/model/template_category.dart';
+import 'package:auditdat/db/model/template_page.dart';
 import 'package:auditdat/db/repo/template_category_repo.dart';
+import 'package:auditdat/db/repo/template_page_repo.dart';
 
 class TemplateVersionTableKeys {
   static const String tableName = 'template_versions';
@@ -58,6 +60,9 @@ class TemplateVersion {
   //Category Relationship
   Future<TemplateCategory?> category() async =>
       await TemplateCategoryRepo.instance.get(categoryId);
+
+  Future<List<TemplatePage>> pages() async =>
+      await TemplatePageRepo.instance.getAllVersionPages(id);
 
   static TemplateVersion fromJson(Map<String, Object?> json) => TemplateVersion(
         id: json[TemplateVersionTableKeys.id] as int,

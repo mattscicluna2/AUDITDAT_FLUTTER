@@ -49,6 +49,23 @@ class TemplatePageRepo {
     }
   }
 
+  Future<List<TemplatePage>> getAllVersionPages(int versionId) async {
+    final db = await updatDatabaseInstance.database;
+
+    final result = await db.query(
+      TemplatePageTableKeys.tableName,
+      columns: TemplatePageTableKeys.values,
+      where: '${TemplatePageTableKeys.templateVersionId} = ?',
+      whereArgs: [versionId],
+    );
+
+    if (result.isNotEmpty) {
+      return result.map((json) => TemplatePage.fromJson(json)).toList();
+    }
+
+    return [];
+  }
+
   Future<List<TemplatePage>> getAll() async {
     final db = await updatDatabaseInstance.database;
 

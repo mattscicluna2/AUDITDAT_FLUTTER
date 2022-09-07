@@ -53,7 +53,7 @@ class TemplatePage {
         id: json[TemplatePageTableKeys.id] as int,
         templateVersionId: json[TemplatePageTableKeys.templateVersionId] as int,
         name: json[TemplatePageTableKeys.name] as String,
-        mainPage: json[TemplatePageTableKeys.mainPage] as bool,
+        mainPage: json[TemplatePageTableKeys.mainPage] == 1 ? true : false,
         index: json[TemplatePageTableKeys.index] as int,
       );
 
