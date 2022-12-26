@@ -55,6 +55,9 @@ class TemplateVersionRepo {
       TemplateVersionTableKeys.tableName,
       columns: TemplateVersionTableKeys.values,
       where: '${TemplateVersionTableKeys.categoryId} = ?',
+      // limit: 1,
+      groupBy: TemplateVersionTableKeys.templateId,
+      having: 'max(${TemplateVersionTableKeys.version})',
       whereArgs: [categoryId],
     );
 
