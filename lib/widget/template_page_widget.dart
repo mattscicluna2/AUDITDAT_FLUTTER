@@ -51,7 +51,6 @@ class _TemplatePageWidgetState extends State<TemplatePageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    log(components.length.toString());
     if (components.isNotEmpty) log(components[0].id.toString());
 
     return ListView.custom(

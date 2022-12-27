@@ -48,6 +48,24 @@ class InspectionStatusRepo {
     }
   }
 
+  Future<InspectionStatus?> getByName(String name) async {
+    final db = await updatDatabaseInstance.database;
+
+    final maps = await db.query(
+      InspectionStatusTableKeys.tableName,
+      columns: InspectionStatusTableKeys.values,
+      where: '${InspectionStatusTableKeys.name} = ?',
+      whereArgs: [name],
+    );
+
+    if (maps.isNotEmpty) {
+      return InspectionStatus.fromJson(maps.first);
+    } else {
+      log("empty");
+      return null;
+    }
+  }
+
   Future<int> update(InspectionStatus inspection) async {
     final db = await updatDatabaseInstance.database;
 

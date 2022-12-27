@@ -29,18 +29,18 @@ class InspectionTableKeys {
 }
 
 class Inspection {
-  final int id;
+  final int? id;
   final int? realId;
   final int templateVersionId;
   final String? reportDate;
   final int? siteId;
   final int? customerId;
   final int statusId;
-  final String createdAt;
+  final int createdAt;
   final bool synced;
 
   const Inspection({
-    required this.id,
+    this.id,
     this.realId,
     required this.templateVersionId,
     this.reportDate,
@@ -70,7 +70,7 @@ class Inspection {
         siteId: siteId ?? this.siteId,
         customerId: customerId ?? this.customerId,
         statusId: statusId ?? this.statusId,
-        createdAt: createdAt ?? this.createdAt,
+        createdAt: this.createdAt,
         synced: synced ?? this.synced,
       );
 
@@ -83,14 +83,14 @@ class Inspection {
 
   static Inspection fromJson(Map<String, Object?> json) => Inspection(
         id: json[InspectionTableKeys.id] as int,
-        realId: json[InspectionTableKeys.realId] as int,
+        realId: json[InspectionTableKeys.realId] as int?,
         templateVersionId: json[InspectionTableKeys.templateVersionId] as int,
-        reportDate: json[InspectionTableKeys.reportDate] as String,
-        siteId: json[InspectionTableKeys.siteId] as int,
-        customerId: json[InspectionTableKeys.customerId] as int,
+        reportDate: json[InspectionTableKeys.reportDate] as String?,
+        siteId: json[InspectionTableKeys.siteId] as int?,
+        customerId: json[InspectionTableKeys.customerId] as int?,
         statusId: json[InspectionTableKeys.statusId] as int,
-        createdAt: json[InspectionTableKeys.createdAt] as String,
-        synced: json[InspectionTableKeys.synced] as bool,
+        createdAt: json[InspectionTableKeys.createdAt] as int,
+        synced: json[InspectionTableKeys.synced] == 1,
       );
 
   Map<String, Object?> toJson() => {

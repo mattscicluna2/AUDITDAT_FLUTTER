@@ -9,4 +9,6 @@ class ColorConstants {
   static const Color danger = Color.fromRGBO(220, 53, 69, 1);
   static const Color white = Color.fromRGBO(255, 255, 255, 1);
   static const Color grey = Color.fromRGBO(108, 117, 125, 1);
+  static const Color lightGrey = Color.fromRGBO(245, 245, 245, 1);
+  static const Color charcoal = Color.fromRGBO(54, 69, 79, 1);
 }

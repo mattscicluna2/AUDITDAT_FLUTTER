@@ -15,13 +15,13 @@ class InspectionRepo {
     return '''
       CREATE TABLE ${InspectionTableKeys.tableName} ( 
         ${InspectionTableKeys.id} INTEGER PRIMARY KEY, 
-        ${InspectionTableKeys.realId} INTEGER NOT NULL,
+        ${InspectionTableKeys.realId} INTEGER,
         ${InspectionTableKeys.templateVersionId} INTEGER NOT NULL,
-        ${InspectionTableKeys.reportDate} TEXT NOT NULL,
-        ${InspectionTableKeys.siteId} INTEGER NOT NULL,
-        ${InspectionTableKeys.customerId} INTEGER NOT NULL,
+        ${InspectionTableKeys.reportDate} TEXT,
+        ${InspectionTableKeys.siteId} INTEGER,
+        ${InspectionTableKeys.customerId} INTEGER,
         ${InspectionTableKeys.statusId} INTEGER NOT NULL,
-        ${InspectionTableKeys.createdAt} TEXT NOT NULL,
+        ${InspectionTableKeys.createdAt} INTEGER NOT NULL,
         ${InspectionTableKeys.synced} INTEGER NOT NULL
         )
       ''';
@@ -57,7 +57,8 @@ class InspectionRepo {
   Future<List<Inspection>> getAll() async {
     final db = await updatDatabaseInstance.database;
 
-    final result = await db.query(InspectionTableKeys.tableName);
+    final result = await db.query(InspectionTableKeys.tableName,
+        orderBy: '${InspectionTableKeys.createdAt} DESC');
 
     return result.map((json) => Inspection.fromJson(json)).toList();
   }

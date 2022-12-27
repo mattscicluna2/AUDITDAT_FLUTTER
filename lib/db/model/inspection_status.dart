@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:auditdat/extensions/HexColor.dart';
+import 'package:flutter/cupertino.dart';
+
 class InspectionStatusTableKeys {
   static const String tableName = 'inspection_statuses';
 
-  static const List<String> values = [id, name];
+  static const List<String> values = [id, name, colour];
 
   static const String id = 'id';
   static const String name = 'name';
@@ -21,6 +24,11 @@ class InspectionStatus {
   final int id;
   final String name;
   final String colour;
+
+  Color processColour({double opacity = 1}) {
+    Color colour = HexColor.fromHex(this.colour);
+    return colour.withOpacity(opacity);
+  }
 
   const InspectionStatus({
     required this.id,
