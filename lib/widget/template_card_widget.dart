@@ -41,7 +41,6 @@ class _TemplateCardWidgetState extends State<TemplateCardWidget> {
         .getTemplateData(context, widget.template);
 
     if (synced) await initializeMainPage();
-    // mainPage = (await widget.template.pages())[0];
 
     setState(() => downloaded = synced);
 
@@ -54,6 +53,9 @@ class _TemplateCardWidgetState extends State<TemplateCardWidget> {
     return GestureDetector(
       onTap: () async {
         if (downloaded && mainPage != null) {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              '/onGoingInspections', (Route<dynamic> route) => false);
+
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => InspectionPage(page: mainPage!)));
         } else {
@@ -64,9 +66,6 @@ class _TemplateCardWidgetState extends State<TemplateCardWidget> {
         color: !downloaded
             ? ColorConstants.white.withOpacity(0.5)
             : ColorConstants.white.withOpacity(1),
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.circular(10),
-        // ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

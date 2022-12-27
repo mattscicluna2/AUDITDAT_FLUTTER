@@ -48,8 +48,9 @@ class TemplateField {
         id: json[TemplateFieldTableKeys.id] as int,
         name: json[TemplateFieldTableKeys.name] as String,
         typeId: json[TemplateFieldTableKeys.typeId] as int,
-        required: json[TemplateFieldTableKeys.required] as bool,
-        mediaRequired: json[TemplateFieldTableKeys.mediaRequired] as bool,
+        required: json[TemplateFieldTableKeys.required] == 1 ? true : false,
+        mediaRequired:
+            json[TemplateFieldTableKeys.mediaRequired] == 1 ? true : false,
       );
 
   Map<String, Object?> toJson() => {

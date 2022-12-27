@@ -35,10 +35,20 @@ class _TemplatePageWidgetState extends State<TemplatePageWidget> {
 
   final item = List<String>.generate(30, (i) => 'Item $i');
 
-  getComponentWidget(TemplateComponent component) {
-    if (component.fieldId != null)
-      return InspectionFieldCardWidget();
-    else if (component.checkId != null) return InspectionCheckCardWidget();
+  Future<Widget> getComponentWidget(TemplateComponent component) async {
+    if (component.fieldId != null) {
+      return InspectionFieldCardWidget(
+        component: component,
+        field: (await component.field())!,
+      );
+    } else if (component.checkId != null) {
+      // log(component.checkId.toString());
+      // TemplateCheck check = (await component.check())!;
+      // log(check.toJson().toString());
+      return InspectionCheckCardWidget(check: (await component.check())!);
+    }
+
+    throw "Not Found";
   }
 
   @override
@@ -54,7 +64,7 @@ class _TemplatePageWidgetState extends State<TemplatePageWidget> {
             TemplateComponent component = components[index];
 
             if (index == 0) {
-              return Column(
+              Column column = Column(
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width,
@@ -66,11 +76,39 @@ class _TemplatePageWidgetState extends State<TemplatePageWidget> {
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  getComponentWidget(component),
+                  FutureBuilder<Widget>(
+                    future: getComponentWidget(
+                        component), // a previously-obtained Future<String> or null
+                    builder:
+                        (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                      if (snapshot.hasData) {
+                        return snapshot.data!;
+                      }
+
+                      return Container();
+                    },
+                  ),
+                  // getComponentWidget(component),
                 ],
               );
+
+              return column;
             } else {
-              return getComponentWidget(component);
+              return FutureBuilder<Widget>(
+                future: getComponentWidget(
+                    component), // a previously-obtained Future<String> or null
+                builder:
+                    (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                  log(component.toJson().toString());
+                  if (snapshot.hasData) {
+                    return snapshot.data!;
+                  }
+
+                  return Container();
+                  // throw "Widget Not Found";
+                },
+              );
+              // return getComponentWidget(component);
             }
           }
         }));

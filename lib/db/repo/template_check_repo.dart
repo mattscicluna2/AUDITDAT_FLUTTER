@@ -32,6 +32,7 @@ class TemplateCheckRepo {
   }
 
   Future<TemplateCheck?> get(int id) async {
+    log("Get Check");
     final db = await updatDatabaseInstance.database;
 
     final maps = await db.query(
@@ -42,6 +43,8 @@ class TemplateCheckRepo {
     );
 
     if (maps.isNotEmpty) {
+      log("Got Check");
+
       return TemplateCheck.fromJson(maps.first);
     } else {
       log("empty");

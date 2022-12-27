@@ -14,17 +14,21 @@ class TabularPage extends StatefulWidget {
 }
 
 class _TabularPageState extends State<TabularPage> {
-  int _selectedIndex = 0;
+  int? _selectedIndex;
 
   @override
   Widget build(BuildContext context) {
     return BasePage(
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
+        currentIndex: _selectedIndex != null
+            ? _selectedIndex!
+            : widget.bottomNavSettings.selectedIndex,
         onTap: _onBottomNavItemTapped,
         items: widget.bottomNavSettings.tabItems,
       ),
-      body: widget.bottomNavSettings.pages.elementAt(_selectedIndex),
+      body: widget.bottomNavSettings.pages.elementAt(_selectedIndex != null
+          ? _selectedIndex!
+          : widget.bottomNavSettings.selectedIndex),
     );
   }
 

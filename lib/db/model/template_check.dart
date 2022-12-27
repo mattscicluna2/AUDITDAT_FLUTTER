@@ -48,8 +48,9 @@ class TemplateCheck {
         id: json[TemplateCheckTableKeys.id] as int,
         name: json[TemplateCheckTableKeys.name] as String,
         responseGroupId: json[TemplateCheckTableKeys.responseGroupId] as int,
-        required: json[TemplateCheckTableKeys.required] as bool,
-        mediaRequired: json[TemplateCheckTableKeys.mediaRequired] as bool,
+        required: json[TemplateCheckTableKeys.required] == 1 ? true : false,
+        mediaRequired:
+            json[TemplateCheckTableKeys.mediaRequired] == 1 ? true : false,
       );
 
   Map<String, Object?> toJson() => {

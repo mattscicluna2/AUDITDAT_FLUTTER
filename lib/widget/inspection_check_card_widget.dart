@@ -1,9 +1,13 @@
 import 'package:auditdat/constants/color_constants.dart';
+import 'package:auditdat/db/model/template_check.dart';
 import 'package:auditdat/widget/inspection_common_card_widget.dart';
 import 'package:flutter/material.dart';
 
 class InspectionCheckCardWidget extends StatelessWidget {
-  const InspectionCheckCardWidget({Key? key}) : super(key: key);
+  final TemplateCheck check;
+
+  const InspectionCheckCardWidget({Key? key, required this.check})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

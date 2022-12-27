@@ -9,9 +9,6 @@ import 'package:auditdat/service/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'dart:developer';
-
-import 'page/notes_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +38,7 @@ class MyApp extends StatelessWidget {
           builder: (_, snapshot) {
             print(snapshot);
             if (snapshot.hasData) {
-              return HomePage();
+              return HomePage(selectedIndex: 0);
             } else {
               return LoginPage();
             }
@@ -49,7 +46,8 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           '/login': (context) => LoginPage(),
-          '/home': (context) => HomePage(),
+          '/templates': (context) => HomePage(selectedIndex: 0),
+          '/onGoingInspections': (context) => HomePage(selectedIndex: 1),
         },
       );
 }

@@ -45,6 +45,8 @@ class TemplatesService {
           ? '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categoryTemplates/${category.id}?lastUpdated=${syncLastUpdated.lastUpdated}'
           : '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/categoryTemplates/${category.id}';
 
+      log(url);
+
       http.Response response = await http.get(
         Uri.parse(url),
         headers: <String, String>{
