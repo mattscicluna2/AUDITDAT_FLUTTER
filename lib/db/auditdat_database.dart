@@ -1,6 +1,9 @@
 import 'dart:developer';
 
 import 'package:auditdat/constants/db_constants.dart';
+import 'package:auditdat/db/auditdat_seeders.dart';
+import 'package:auditdat/db/model/inspection.dart';
+import 'package:auditdat/db/model/inspection_status.dart';
 import 'package:auditdat/db/model/sync_last_updated.dart';
 import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/model/template_check.dart';
@@ -12,6 +15,8 @@ import 'package:auditdat/db/model/template_response.dart';
 import 'package:auditdat/db/model/template_response_group.dart';
 import 'package:auditdat/db/model/template_section.dart';
 import 'package:auditdat/db/model/template_version.dart';
+import 'package:auditdat/db/repo/inspection_repo.dart';
+import 'package:auditdat/db/repo/inspection_status_repo.dart';
 import 'package:auditdat/db/repo/note_repo.dart';
 import 'package:auditdat/db/repo/sync_last_updated_repo.dart';
 import 'package:auditdat/db/repo/template_category_repo.dart';
@@ -69,6 +74,12 @@ class AuditdatDatabase {
     await db.execute(TemplateSectionRepo.createTable());
     await db.execute(TemplateCheckRepo.createTable());
     await db.execute(TemplateFieldRepo.createTable());
+
+    await db.execute(InspectionStatusRepo.createTable());
+    await db.execute(InspectionRepo.createTable());
+
+    //Seed Static data
+    await (AuditdatSeeders()).run();
   }
 
   Future _upgradeDB(Database db, int oldVersion, int newVersion) async {
@@ -98,6 +109,9 @@ class AuditdatDatabase {
           .execute("DROP TABLE IF EXISTS ${TemplateCheckTableKeys.tableName}");
       await db
           .execute("DROP TABLE IF EXISTS ${TemplateFieldTableKeys.tableName}");
+      await db.execute(
+          "DROP TABLE IF EXISTS ${InspectionStatusTableKeys.tableName}");
+      await db.execute("DROP TABLE IF EXISTS ${InspectionTableKeys.tableName}");
 
       await _createDB(db, newVersion);
     }

@@ -162,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
         AuthService.instance.login(_user, token);
 
         Navigator.of(context)
-            .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+            .pushNamedAndRemoveUntil('/templates', (Route<dynamic> route) => false);
       } else {
         Utilities.showToast(
             context: context,

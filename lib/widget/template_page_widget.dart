@@ -42,10 +42,8 @@ class _TemplatePageWidgetState extends State<TemplatePageWidget> {
         field: (await component.field())!,
       );
     } else if (component.checkId != null) {
-      // log(component.checkId.toString());
-      // TemplateCheck check = (await component.check())!;
-      // log(check.toJson().toString());
-      return InspectionCheckCardWidget(check: (await component.check())!);
+      return InspectionCheckCardWidget(
+          component: component, check: (await component.check())!);
     }
 
     throw "Not Found";

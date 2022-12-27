@@ -7,9 +7,16 @@ class InspectionCommonCardWidget extends StatelessWidget {
   final Widget body;
   final String title;
   final String? note;
+  final bool isRequired;
+  final bool mediaRequired;
 
   const InspectionCommonCardWidget(
-      {Key? key, required this.body, required this.title, this.note})
+      {Key? key,
+      required this.body,
+      required this.title,
+      this.note,
+      this.isRequired = false,
+      this.mediaRequired = false})
       : super(key: key);
 
   @override
@@ -28,10 +35,11 @@ class InspectionCommonCardWidget extends StatelessWidget {
             ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 0),
               title: Row(children: [
-                Text(
-                  "* ",
-                  style: TextStyle(color: ColorConstants.danger),
-                ),
+                if (isRequired)
+                  Text(
+                    "* ",
+                    style: TextStyle(color: ColorConstants.danger),
+                  ),
                 Text(
                   title,
                   style: TextStyle(color: ColorConstants.grey),
@@ -58,7 +66,9 @@ class InspectionCommonCardWidget extends StatelessWidget {
                   : null,
             ),
             body,
-            InspectionCardToolbar()
+            InspectionCardToolbar(
+              mediaRequired: mediaRequired,
+            )
           ],
         ),
       ),

@@ -22,6 +22,8 @@ class _InspectionFieldCardWidgetState extends State<InspectionFieldCardWidget> {
     return InspectionCommonCardWidget(
       title: widget.field.name,
       note: widget.component.note,
+      isRequired: widget.field.required,
+      mediaRequired: widget.field.mediaRequired,
       body: TextField(
         style: TextStyle(fontSize: 15, color: Colors.black),
         decoration: InputDecoration(

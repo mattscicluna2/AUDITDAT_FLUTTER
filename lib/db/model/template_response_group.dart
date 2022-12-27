@@ -25,7 +25,7 @@ class TemplateResponseGroup {
         id: id ?? this.id,
       );
 
-  Future<List<TemplateResponse>?> responses() async =>
+  Future<List<TemplateResponse>> responses() async =>
       await TemplateResponseRepo.instance.getAllByGroupId(id);
 
   static TemplateResponseGroup fromJson(Map<String, Object?> json) =>

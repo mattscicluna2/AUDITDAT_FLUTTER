@@ -1,4 +1,4 @@
 class DBConstants {
   static const String name = "auditdat.db";
-  static const int version = 45;
+  static const int version = 47;
 }

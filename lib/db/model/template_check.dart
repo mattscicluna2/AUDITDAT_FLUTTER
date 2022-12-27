@@ -1,3 +1,6 @@
+import 'package:auditdat/db/model/template_response_group.dart';
+import 'package:auditdat/db/repo/template_response_group_repo.dart';
+
 class TemplateCheckTableKeys {
   static const String tableName = 'template_checks';
 
@@ -42,8 +45,6 @@ class TemplateCheck {
         mediaRequired: mediaRequired,
       );
 
-  //TODO Relationships; Response Group
-
   static TemplateCheck fromJson(Map<String, Object?> json) => TemplateCheck(
         id: json[TemplateCheckTableKeys.id] as int,
         name: json[TemplateCheckTableKeys.name] as String,
@@ -60,4 +61,8 @@ class TemplateCheck {
         TemplateCheckTableKeys.required: required ? 1 : 0,
         TemplateCheckTableKeys.mediaRequired: mediaRequired ? 1 : 0,
       };
+
+  //Relationships
+  Future<TemplateResponseGroup?> responseGroup() async =>
+      await TemplateResponseGroupRepo.instance.get(responseGroupId);
 }

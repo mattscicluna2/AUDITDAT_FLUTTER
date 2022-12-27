@@ -69,7 +69,7 @@ class TemplateResponse {
         groupId: json[TemplateResponseTableKeys.groupId] as int,
         response: json[TemplateResponseTableKeys.response] as String,
         colour: json[TemplateResponseTableKeys.colour] as String,
-        fail: json[TemplateResponseTableKeys.fail] as bool,
+        fail: json[TemplateResponseTableKeys.fail] == 1 ,
         score: json[TemplateResponseTableKeys.score] as int,
         index: json[TemplateResponseTableKeys.index] as int,
       );

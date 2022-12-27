@@ -107,6 +107,7 @@ class TemplatesService {
       String url =
           '${AppConstants.getEndpointUrl()}/api/auditdat/v1/sync/templateVersion/${version.id}';
 
+      log(url);
       http.Response response = await http.get(
         Uri.parse(url),
         headers: <String, String>{
@@ -121,6 +122,44 @@ class TemplatesService {
       if (decodedResponse['success']) {
         var data = decodedResponse['data'];
         Database db = await AuditdatDatabase.instance.database;
+
+        if (data['response_groups'] != null) {
+          data['response_groups'].forEach((responseGroup) async {
+            TemplateResponseGroup? _responseGroup =
+                await TemplateResponseGroupRepo.instance
+                    .get(responseGroup['id']);
+
+            //Populate Response Groups if not already done
+            if (_responseGroup == null) {
+              _responseGroup = await TemplateResponseGroupRepo.instance
+                  .create(TemplateResponseGroup(id: responseGroup['id']));
+
+              responseGroup['responses'].forEach((response) async {
+                await TemplateResponseRepo.instance.create(TemplateResponse(
+                  id: response['id'],
+                  groupId: response['group_id'],
+                  response: response['response'],
+                  colour: response['colour'],
+                  fail: response['fail'] == 1,
+                  score: response['score'],
+                  index: response['order'],
+                ));
+              });
+            }
+          });
+        }
+
+        //Populate Field Types if not already done
+        if (data['field_types'] != null) {
+          data['field_types'].forEach((fieldType) async {
+            TemplateFieldType? _fieldType =
+                await TemplateFieldTypeRepo.instance.get(fieldType['id']);
+
+            _fieldType ??= await TemplateFieldTypeRepo.instance.create(
+                TemplateFieldType(
+                    id: fieldType['id'], name: fieldType['type']));
+          });
+        }
 
         data['pages'].forEach((page) async {
           log(page['name']);
@@ -154,24 +193,6 @@ class TemplatesService {
                   mediaRequired: component['check']['media_required'] == 1
                       ? true
                       : false));
-
-              //Save responses if not already there
-              TemplateResponseGroup savedGroup = await TemplateResponseGroupRepo
-                  .instance
-                  .create(TemplateResponseGroup(
-                      id: component['check']['response_group']['id']));
-
-              component['check']['response_group']['responses']
-                  .forEach((response) async {
-                await TemplateResponseRepo.instance.create(TemplateResponse(
-                    id: response['id'],
-                    groupId: savedGroup.id,
-                    response: response['response'],
-                    colour: response['colour'],
-                    fail: response['fail'] == 1 ? true : false,
-                    score: response['score'],
-                    index: response['order']));
-              });
             } else if (savedComponent.fieldId != null) {
               await TemplateFieldRepo.instance.create(TemplateField(
                   id: component['field']['id'],
@@ -181,10 +202,6 @@ class TemplatesService {
                   mediaRequired: component['field']['media_required'] == 1
                       ? true
                       : false));
-
-              await TemplateFieldTypeRepo.instance.create(TemplateFieldType(
-                  id: component['field']['type']['id'],
-                  name: component['field']['type']['type']));
             } else if (savedComponent.sectionId != null) {
               await TemplateSectionRepo.instance.create(TemplateSection(
                   id: component['section']['id'],
