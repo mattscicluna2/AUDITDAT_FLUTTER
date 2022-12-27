@@ -83,22 +83,4 @@ class InspectionRepo {
       whereArgs: [id],
     );
   }
-
-  Future<int> deleteAllNotInList(List<int> ids) async {
-    final db = await updatDatabaseInstance.database;
-
-    if (ids.length > 0) {
-      return await db.delete(
-        InspectionTableKeys.tableName,
-        where: 'id NOT IN (${ids.map((_) => '?').join(', ')})',
-        whereArgs: ids,
-      );
-    } else {
-      return await db.delete(
-        InspectionTableKeys.tableName,
-        where: '',
-        whereArgs: [],
-      );
-    }
-  }
 }

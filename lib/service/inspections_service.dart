@@ -15,4 +15,8 @@ class InspectionsService {
             .id,
         createdAt: DateTime.now().millisecondsSinceEpoch));
   }
+
+   delete(int inspectionId) async {
+    return await InspectionRepo.instance.delete(inspectionId);
+  }
 }

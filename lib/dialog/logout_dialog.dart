@@ -16,7 +16,7 @@ class LogoutDialog {
           title: Text(
             'Are you sure you want to logout?',
             textAlign: TextAlign.center,
-            style: TextStyle(color: ColorConstants.primary),
+            style: TextStyle(color: ColorConstants.charcoal),
           ),
           content: Row(
             mainAxisSize: MainAxisSize.min,
@@ -27,6 +27,8 @@ class LogoutDialog {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: ColorConstants.grey),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },

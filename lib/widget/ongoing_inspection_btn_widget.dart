@@ -2,13 +2,17 @@ import 'package:auditdat/constants/color_constants.dart';
 import 'package:auditdat/db/model/inspection.dart';
 import 'package:auditdat/db/model/inspection_status.dart';
 import 'package:auditdat/db/model/template_version.dart';
+import 'package:auditdat/dialog/inspection_actions_dialog.dart';
 import 'package:auditdat/page/inspection_page.dart';
+import 'package:auditdat/service/inspections_service.dart';
 import 'package:auditdat/widget/status_widget.dart';
 import 'package:flutter/material.dart';
 
 class OngoingInspectionBtnWidget extends StatefulWidget {
   final Inspection inspection;
-  const OngoingInspectionBtnWidget({Key? key, required this.inspection})
+  final VoidCallback onDeleteCallback;
+  const OngoingInspectionBtnWidget(
+      {Key? key, required this.inspection, required this.onDeleteCallback})
       : super(key: key);
 
   @override
@@ -49,10 +53,23 @@ class _OngoingInspectionBtnWidgetState
                   MaterialStateProperty.all(ColorConstants.lightGrey),
             ),
             onPressed: () async {
-              if (!isLoading)
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        InspectionPage(inspection: widget.inspection)));
+              if (!isLoading) {
+                InspectionActionsDialog.instance.show(
+                    context: context,
+                    inspection: widget.inspection,
+                    editInspectionCallback: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              InspectionPage(inspection: widget.inspection)));
+                    },
+                    deleteInspectionCallback: () async {
+                      await InspectionsService.instance
+                          .delete(widget.inspection.id!);
+                      Navigator.of(context).pop();
+                      widget.onDeleteCallback();
+                    });
+              }
             },
             child: isLoading
                 ? Padding(
@@ -80,13 +97,15 @@ class _OngoingInspectionBtnWidgetState
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            version.name,
-                            style: const TextStyle(
-                                color: ColorConstants.charcoal,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          Flexible(
+                            child: Text(
+                              version.name,
+                              style: const TextStyle(
+                                  color: ColorConstants.charcoal,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          )
                         ],
                       ),
                     ]),

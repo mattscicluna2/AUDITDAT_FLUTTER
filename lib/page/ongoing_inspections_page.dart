@@ -39,7 +39,12 @@ class _OngoingInspectionsPageState extends State<OngoingInspectionsPage> {
             shrinkWrap: true,
             children: List.generate(inspections.length, (index) {
               return Column(children: [
-                OngoingInspectionBtnWidget(inspection: inspections[index]),
+                OngoingInspectionBtnWidget(
+                  inspection: inspections[index],
+                  onDeleteCallback: () async {
+                    getInspections();
+                  },
+                ),
                 SizedBox(height: 10)
               ]);
             }));
