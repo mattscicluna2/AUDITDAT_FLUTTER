@@ -1,6 +1,6 @@
-import 'dart:developer';
-
 import 'package:auditdat/constants/color_constants.dart';
+import 'package:auditdat/page/camera_page.dart';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -104,7 +104,10 @@ class _InspectionCardToolbarState extends State<InspectionCardToolbar> {
           ),
           InkWell(
             onTap: () async {
-              log("Test");
+              await availableCameras().then((value) => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => CameraPage(cameras: value))));
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),

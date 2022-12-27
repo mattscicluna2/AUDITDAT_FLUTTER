@@ -24,7 +24,7 @@ class _OngoingInspectionsPageState extends State<OngoingInspectionsPage> {
   Future getInspections() async {
     setState(() => isLoading = true);
 
-    var _inspections = await InspectionRepo.instance.getAll();
+    List<Inspection> _inspections = await InspectionRepo.instance.getAll();
     setState(() => inspections = _inspections);
 
     setState(() => isLoading = false);
