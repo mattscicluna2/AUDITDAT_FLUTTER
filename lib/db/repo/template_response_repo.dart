@@ -32,7 +32,7 @@ class TemplateResponseRepo {
     return response.copy(id: id);
   }
 
-  Future<TemplateResponse?> get(int id) async {
+  Future<TemplateResponse?> get(int? id) async {
     final db = await updatDatabaseInstance.database;
 
     final maps = await db.query(

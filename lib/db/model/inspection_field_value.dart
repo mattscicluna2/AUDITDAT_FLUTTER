@@ -1,6 +1,8 @@
+import 'package:auditdat/db/model/inspection.dart';
 import 'package:auditdat/db/model/inspection_repeatable_section.dart';
 import 'package:auditdat/db/model/template_field.dart';
 import 'package:auditdat/db/repo/inspection_repeatable_section_repo.dart';
+import 'package:auditdat/db/repo/inspection_repo.dart';
 import 'package:auditdat/db/repo/template_field_repo.dart';
 
 class InspectionFieldValueTableKeys {
@@ -10,6 +12,7 @@ class InspectionFieldValueTableKeys {
     id,
     realId,
     inspectionId,
+    templateFieldId,
     repeatableSectionId,
     value,
     fileId,
@@ -80,7 +83,10 @@ class InspectionFieldValue {
         synced: synced ?? this.synced,
       );
 
-  //TODO Relationships
+  //Relationships
+  Future<Inspection?> inspection() async =>
+      await (InspectionRepo.instance.get(inspectionId));
+
   Future<TemplateField?> templateField() async =>
       await (TemplateFieldRepo.instance.get(templateFieldId));
 

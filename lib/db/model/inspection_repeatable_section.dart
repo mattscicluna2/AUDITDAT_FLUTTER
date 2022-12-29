@@ -1,3 +1,6 @@
+import 'package:auditdat/db/model/inspection.dart';
+import 'package:auditdat/db/repo/inspection_repo.dart';
+
 class InspectionRepeatableSectionTableKeys {
   static const String tableName = 'inspection_repeatable_sections';
 
@@ -58,7 +61,9 @@ class InspectionRepeatableSection {
         synced: synced ?? this.synced,
       );
 
-  //TODO Relationships
+  //Relationships
+  Future<Inspection?> inspection() async =>
+      await (InspectionRepo.instance.get(inspectionId));
 
   static InspectionRepeatableSection fromJson(Map<String, Object?> json) =>
       InspectionRepeatableSection(

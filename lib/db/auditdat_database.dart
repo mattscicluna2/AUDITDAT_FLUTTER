@@ -3,7 +3,11 @@ import 'dart:developer';
 import 'package:auditdat/constants/db_constants.dart';
 import 'package:auditdat/db/auditdat_seeders.dart';
 import 'package:auditdat/db/model/inspection.dart';
+import 'package:auditdat/db/model/inspection_check.dart';
+import 'package:auditdat/db/model/inspection_field_value.dart';
+import 'package:auditdat/db/model/inspection_repeatable_section.dart';
 import 'package:auditdat/db/model/inspection_status.dart';
+import 'package:auditdat/db/model/note.dart';
 import 'package:auditdat/db/model/sync_last_updated.dart';
 import 'package:auditdat/db/model/template_category.dart';
 import 'package:auditdat/db/model/template_check.dart';
@@ -15,6 +19,7 @@ import 'package:auditdat/db/model/template_response.dart';
 import 'package:auditdat/db/model/template_response_group.dart';
 import 'package:auditdat/db/model/template_section.dart';
 import 'package:auditdat/db/model/template_version.dart';
+import 'package:auditdat/db/repo/inspection_check_repo.dart';
 import 'package:auditdat/db/repo/inspection_field_value_repo.dart';
 import 'package:auditdat/db/repo/inspection_repeatable_section_repo.dart';
 import 'package:auditdat/db/repo/inspection_repo.dart';
@@ -33,8 +38,6 @@ import 'package:auditdat/db/repo/template_section_repo.dart';
 import 'package:auditdat/db/repo/template_version_repo.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
-import 'model/note.dart';
 
 class AuditdatDatabase {
   static final AuditdatDatabase instance = AuditdatDatabase._init();
@@ -61,26 +64,29 @@ class AuditdatDatabase {
   }
 
   Future _createDB(Database db, int version) async {
-    await db.execute(SyncLastUpdatedRepo.createTable());
+    List<String> tablesToCreate = [
+      SyncLastUpdatedRepo.createTable(),
+      NoteRepo.createTable(),
+      TemplateCategoryRepo.createTable(),
+      TemplateResponseGroupRepo.createTable(),
+      TemplateResponseRepo.createTable(),
+      TemplateFieldTypeRepo.createTable(),
+      TemplateVersionRepo.createTable(),
+      TemplatePageRepo.createTable(),
+      TemplateComponentRepo.createTable(),
+      TemplateSectionRepo.createTable(),
+      TemplateCheckRepo.createTable(),
+      TemplateFieldRepo.createTable(),
+      InspectionStatusRepo.createTable(),
+      InspectionRepo.createTable(),
+      InspectionRepeatableSectionRepo.createTable(),
+      InspectionFieldValueRepo.createTable(),
+      InspectionCheckRepo.createTable(),
+    ];
 
-    await db.execute(NoteRepo.createTable());
-    await db.execute(TemplateCategoryRepo.createTable());
-
-    await db.execute(TemplateResponseGroupRepo.createTable());
-    await db.execute(TemplateResponseRepo.createTable());
-    await db.execute(TemplateFieldTypeRepo.createTable());
-
-    await db.execute(TemplateVersionRepo.createTable());
-    await db.execute(TemplatePageRepo.createTable());
-    await db.execute(TemplateComponentRepo.createTable());
-    await db.execute(TemplateSectionRepo.createTable());
-    await db.execute(TemplateCheckRepo.createTable());
-    await db.execute(TemplateFieldRepo.createTable());
-
-    await db.execute(InspectionStatusRepo.createTable());
-    await db.execute(InspectionRepo.createTable());
-    await db.execute(InspectionRepeatableSectionRepo.createTable());
-    await db.execute(InspectionFieldValueRepo.createTable());
+    for (var element in tablesToCreate) {
+      await db.execute(element);
+    }
 
     //Seed Static data
     await (AuditdatSeeders()).run();
@@ -89,33 +95,29 @@ class AuditdatDatabase {
   Future _upgradeDB(Database db, int oldVersion, int newVersion) async {
     log("SQLiteDatabase.onUpgrade ($oldVersion => $newVersion)");
     if (oldVersion < newVersion) {
-      await db.execute(
-          "DROP TABLE IF EXISTS ${SyncLastUpdatedTableKeys.tableName}");
-      await db.execute("DROP TABLE IF EXISTS $tableNotes");
+      List<String> tablesToDrop = [
+        SyncLastUpdatedTableKeys.tableName,
+        tableNotes,
+        TemplateResponseGroupTableKeys.tableName,
+        TemplateResponseTableKeys.tableName,
+        TemplateFieldTypeTableKeys.tableName,
+        TemplateCategoryTableKeys.tableName,
+        TemplateVersionTableKeys.tableName,
+        TemplatePageTableKeys.tableName,
+        TemplateComponentTableKeys.tableName,
+        TemplateSectionTableKeys.tableName,
+        TemplateCheckTableKeys.tableName,
+        TemplateFieldTableKeys.tableName,
+        InspectionStatusTableKeys.tableName,
+        InspectionTableKeys.tableName,
+        InspectionRepeatableSectionTableKeys.tableName,
+        InspectionFieldValueTableKeys.tableName,
+        InspectionCheckTableKeys.tableName,
+      ];
 
-      await db.execute(
-          "DROP TABLE IF EXISTS ${TemplateResponseGroupTableKeys.tableName}");
-      await db.execute(
-          "DROP TABLE IF EXISTS ${TemplateResponseTableKeys.tableName}");
-      await db.execute(
-          "DROP TABLE IF EXISTS ${TemplateFieldTypeTableKeys.tableName}");
-      await db.execute(
-          "DROP TABLE IF EXISTS ${TemplateCategoryTableKeys.tableName}");
-      await db.execute(
-          "DROP TABLE IF EXISTS ${TemplateVersionTableKeys.tableName}");
-      await db
-          .execute("DROP TABLE IF EXISTS ${TemplatePageTableKeys.tableName}");
-      await db.execute(
-          "DROP TABLE IF EXISTS ${TemplateComponentTableKeys.tableName}");
-      await db.execute(
-          "DROP TABLE IF EXISTS ${TemplateSectionTableKeys.tableName}");
-      await db
-          .execute("DROP TABLE IF EXISTS ${TemplateCheckTableKeys.tableName}");
-      await db
-          .execute("DROP TABLE IF EXISTS ${TemplateFieldTableKeys.tableName}");
-      await db.execute(
-          "DROP TABLE IF EXISTS ${InspectionStatusTableKeys.tableName}");
-      await db.execute("DROP TABLE IF EXISTS ${InspectionTableKeys.tableName}");
+      for (var element in tablesToDrop) {
+        await db.execute("DROP TABLE IF EXISTS ${element}");
+      }
 
       await _createDB(db, newVersion);
     }
