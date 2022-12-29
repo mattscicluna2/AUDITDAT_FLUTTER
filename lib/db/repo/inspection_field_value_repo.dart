@@ -14,7 +14,7 @@ class InspectionFieldValueRepo {
   static String createTable() {
     return '''
       CREATE TABLE ${InspectionFieldValueTableKeys.tableName} ( 
-        ${InspectionFieldValueTableKeys.id} INTEGER PRIMARY KEY, 
+        ${InspectionFieldValueTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
         ${InspectionFieldValueTableKeys.realId} INTEGER,
         ${InspectionFieldValueTableKeys.inspectionId} INTEGER NOT NULL,
         ${InspectionFieldValueTableKeys.templateFieldId} INTEGER NOT NULL,
@@ -56,10 +56,12 @@ class InspectionFieldValueRepo {
     }
   }
 
-  Future<List<InspectionFieldValue>> getAll() async {
+  Future<List<InspectionFieldValue>> getAll(int inspectionId) async {
     final db = await updatDatabaseInstance.database;
 
     final result = await db.query(InspectionFieldValueTableKeys.tableName,
+        where: '${InspectionFieldValueTableKeys.inspectionId} = ?',
+        whereArgs: [inspectionId],
         orderBy: '${InspectionFieldValueTableKeys.createdAt} DESC');
 
     return result.map((json) => InspectionFieldValue.fromJson(json)).toList();
@@ -73,6 +75,16 @@ class InspectionFieldValueRepo {
       inspectionFieldValue.toJson(),
       where: '${InspectionFieldValueTableKeys.id} = ?',
       whereArgs: [inspectionFieldValue.id],
+    );
+  }
+
+  Future<int> deleteInspectionFieldValues(int inspectionId) async {
+    final db = await updatDatabaseInstance.database;
+
+    return await db.delete(
+      InspectionFieldValueTableKeys.tableName,
+      where: '${InspectionFieldValueTableKeys.inspectionId} = ?',
+      whereArgs: [inspectionId],
     );
   }
 

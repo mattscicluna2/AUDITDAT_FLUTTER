@@ -45,7 +45,7 @@ class _InspectionPageState extends State<InspectionPage> {
     return BasePage(
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : TemplatePageWidget(page: currentPage),
+          : TemplatePageWidget(inspection: widget.inspection, page: currentPage),
     );
   }
 }

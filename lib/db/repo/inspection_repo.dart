@@ -14,7 +14,7 @@ class InspectionRepo {
   static String createTable() {
     return '''
       CREATE TABLE ${InspectionTableKeys.tableName} ( 
-        ${InspectionTableKeys.id} INTEGER PRIMARY KEY, 
+        ${InspectionTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
         ${InspectionTableKeys.realId} INTEGER,
         ${InspectionTableKeys.templateVersionId} INTEGER NOT NULL,
         ${InspectionTableKeys.reportDate} TEXT,

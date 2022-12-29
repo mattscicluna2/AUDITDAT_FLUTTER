@@ -1,5 +1,9 @@
+import 'package:auditdat/db/model/inspection_check.dart';
+import 'package:auditdat/db/model/inspection_field_value.dart';
 import 'package:auditdat/db/model/inspection_status.dart';
 import 'package:auditdat/db/model/template_version.dart';
+import 'package:auditdat/db/repo/inspection_check_repo.dart';
+import 'package:auditdat/db/repo/inspection_field_value_repo.dart';
 import 'package:auditdat/db/repo/inspection_status_repo.dart';
 import 'package:auditdat/db/repo/template_version_repo.dart';
 
@@ -13,6 +17,7 @@ class InspectionTableKeys {
     reportDate,
     customerId,
     siteId,
+    statusId,
     createdAt,
     synced
   ];
@@ -75,6 +80,12 @@ class Inspection {
       );
 
   //Relationships
+  Future<List<InspectionCheck>> checks() async =>
+      await InspectionCheckRepo.instance.getAll(id!);
+
+  Future<List<InspectionFieldValue>> fields() async =>
+      await InspectionFieldValueRepo.instance.getAll(id!);
+
   Future<TemplateVersion?> templateVersion() async =>
       await TemplateVersionRepo.instance.get(templateVersionId);
 

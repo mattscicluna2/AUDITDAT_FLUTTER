@@ -55,7 +55,7 @@ class InspectionCheck {
     this.repeatableSectionId,
     required this.notApplicable,
     this.responseId,
-    required this.comments,
+    this.comments,
     required this.createdAt,
     this.synced = false,
   });
@@ -104,10 +104,10 @@ class InspectionCheck {
         inspectionId: json[InspectionCheckTableKeys.inspectionId] as int,
         templateCheckId: json[InspectionCheckTableKeys.templateCheckId] as int,
         repeatableSectionId:
-            json[InspectionCheckTableKeys.repeatableSectionId] as int,
-        notApplicable: json[InspectionCheckTableKeys.notApplicable] as bool,
-        responseId: json[InspectionCheckTableKeys.responseId] as int,
-        comments: json[InspectionCheckTableKeys.comments] as String,
+            json[InspectionCheckTableKeys.repeatableSectionId] as int?,
+        notApplicable: json[InspectionCheckTableKeys.notApplicable] == 1,
+        responseId: json[InspectionCheckTableKeys.responseId] as int?,
+        comments: json[InspectionCheckTableKeys.comments] as String?,
         createdAt: json[InspectionCheckTableKeys.createdAt] as int,
         synced: json[InspectionCheckTableKeys.synced] == 1,
       );

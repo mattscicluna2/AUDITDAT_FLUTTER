@@ -13,7 +13,7 @@ class InspectionCheckRepo {
   static String createTable() {
     return '''
       CREATE TABLE ${InspectionCheckTableKeys.tableName} ( 
-        ${InspectionCheckTableKeys.id} INTEGER PRIMARY KEY, 
+        ${InspectionCheckTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
         ${InspectionCheckTableKeys.realId} INTEGER,
         ${InspectionCheckTableKeys.inspectionId} INTEGER NOT NULL,
         ${InspectionCheckTableKeys.templateCheckId} INTEGER NOT NULL,
@@ -36,14 +36,15 @@ class InspectionCheckRepo {
     return inspectionCheck.copy(id: id);
   }
 
-  Future<InspectionCheck?> get(int? id) async {
+  Future<InspectionCheck?> get(int inspectionId, int templateCheckId) async {
     final db = await updatDatabaseInstance.database;
 
     final maps = await db.query(
       InspectionCheckTableKeys.tableName,
       columns: InspectionCheckTableKeys.values,
-      where: '${InspectionCheckTableKeys.id} = ?',
-      whereArgs: [id],
+      where:
+          '${InspectionCheckTableKeys.inspectionId} = ? AND ${InspectionCheckTableKeys.templateCheckId} = ?',
+      whereArgs: [inspectionId, templateCheckId],
     );
 
     if (maps.isNotEmpty) {
@@ -54,11 +55,15 @@ class InspectionCheckRepo {
     }
   }
 
-  Future<List<InspectionCheck>> getAll() async {
+  Future<List<InspectionCheck>> getAll(int inspectionId) async {
     final db = await updatDatabaseInstance.database;
 
-    final result = await db.query(InspectionCheckTableKeys.tableName,
-        orderBy: '${InspectionCheckTableKeys.createdAt} DESC');
+    final result = await db.query(
+      InspectionCheckTableKeys.tableName,
+      columns: InspectionCheckTableKeys.values,
+      where: '${InspectionCheckTableKeys.inspectionId} = ?',
+      whereArgs: [inspectionId],
+    );
 
     return result.map((json) => InspectionCheck.fromJson(json)).toList();
   }
@@ -71,6 +76,16 @@ class InspectionCheckRepo {
       inspectionCheck.toJson(),
       where: '${InspectionCheckTableKeys.id} = ?',
       whereArgs: [inspectionCheck.id],
+    );
+  }
+
+  Future<int> deleteInspectionChecks(int inspectionId) async {
+    final db = await updatDatabaseInstance.database;
+
+    return await db.delete(
+      InspectionCheckTableKeys.tableName,
+      where: '${InspectionCheckTableKeys.inspectionId} = ?',
+      whereArgs: [inspectionId],
     );
   }
 

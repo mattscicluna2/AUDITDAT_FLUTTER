@@ -1,19 +1,25 @@
-import 'dart:developer';
-
 import 'package:auditdat/constants/color_constants.dart';
+import 'package:auditdat/db/model/inspection.dart';
+import 'package:auditdat/db/model/inspection_check.dart';
 import 'package:auditdat/db/model/template_check.dart';
 import 'package:auditdat/db/model/template_component.dart';
 import 'package:auditdat/db/model/template_response.dart';
+import 'package:auditdat/db/repo/inspection_check_repo.dart';
 import 'package:auditdat/extensions/HexColor.dart';
+import 'package:auditdat/service/inspection_checks_service.dart';
 import 'package:auditdat/widget/inspection_common_card_widget.dart';
 import 'package:flutter/material.dart';
 
 class InspectionCheckCardWidget extends StatefulWidget {
+  final Inspection inspection;
   final TemplateComponent component;
   final TemplateCheck check;
 
   const InspectionCheckCardWidget(
-      {Key? key, required this.component, required this.check})
+      {Key? key,
+      required this.inspection,
+      required this.component,
+      required this.check})
       : super(key: key);
 
   @override
@@ -25,21 +31,39 @@ class _InspectionCheckCardWidgetState extends State<InspectionCheckCardWidget> {
   bool isLoading = true;
   late int selectedResponseId = -1;
   late List<TemplateResponse> responses;
+  late InspectionCheck inspectionCheck;
 
   @override
   void initState() {
     super.initState();
 
-    getCheckResponses();
+    getCheckData();
   }
 
-  Future getCheckResponses() async {
+  Future getCheckData() async {
     setState(() => isLoading = true);
 
-    var _responses = await (await widget.check.responseGroup())!.responses();
-    setState(() => responses = _responses);
+    List<TemplateResponse> _responses =
+        await (await widget.check.responseGroup())!.responses();
 
-    setState(() => isLoading = false);
+    InspectionCheck _inspectionCheck = await InspectionChecksService.instance
+        .getCreate(widget.inspection.id!, widget.check);
+
+    setState(() => {
+          responses = _responses,
+          inspectionCheck = _inspectionCheck,
+          selectedResponseId = _inspectionCheck.responseId != null
+              ? _inspectionCheck.responseId!
+              : -1,
+          isLoading = false
+        });
+  }
+
+  onResponsePressed(int responseId) async {
+    inspectionCheck = inspectionCheck.copy(responseId: responseId);
+    InspectionCheckRepo.instance.update(inspectionCheck);
+
+    setState(() => selectedResponseId = responseId);
   }
 
   @override
@@ -64,12 +88,8 @@ class _InspectionCheckCardWidgetState extends State<InspectionCheckCardWidget> {
                               : MaterialStateProperty.all(
                                   HexColor.fromHex(responses[index].colour)),
                         ),
-                        onPressed: () async {
-                          setState(
-                              () => selectedResponseId = responses[index].id);
-
-                          log(selectedResponseId.toString());
-                        },
+                        onPressed: () async =>
+                            {await onResponsePressed(responses[index].id)},
                         child: Wrap(children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),

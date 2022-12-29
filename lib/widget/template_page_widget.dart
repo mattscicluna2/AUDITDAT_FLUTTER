@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:auditdat/db/model/inspection.dart';
 import 'package:auditdat/db/model/template_component.dart';
 import 'package:auditdat/db/model/template_page.dart';
 import 'package:auditdat/widget/inspection_check_card_widget.dart';
@@ -7,9 +8,12 @@ import 'package:auditdat/widget/inspection_field_card_widget.dart';
 import 'package:flutter/material.dart';
 
 class TemplatePageWidget extends StatefulWidget {
+  final Inspection inspection;
   final TemplatePage page;
 
-  const TemplatePageWidget({Key? key, required this.page}) : super(key: key);
+  const TemplatePageWidget(
+      {Key? key, required this.inspection, required this.page})
+      : super(key: key);
 
   @override
   State<TemplatePageWidget> createState() => _TemplatePageWidgetState();
@@ -43,7 +47,9 @@ class _TemplatePageWidgetState extends State<TemplatePageWidget> {
       );
     } else if (component.checkId != null) {
       return InspectionCheckCardWidget(
-          component: component, check: (await component.check())!);
+          inspection: widget.inspection,
+          component: component,
+          check: (await component.check())!);
     }
 
     throw "Not Found";

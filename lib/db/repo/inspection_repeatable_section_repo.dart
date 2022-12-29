@@ -15,7 +15,7 @@ class InspectionRepeatableSectionRepo {
   static String createTable() {
     return '''
       CREATE TABLE ${InspectionRepeatableSectionTableKeys.tableName} ( 
-        ${InspectionRepeatableSectionTableKeys.id} INTEGER PRIMARY KEY, 
+        ${InspectionRepeatableSectionTableKeys.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
         ${InspectionRepeatableSectionTableKeys.realId} INTEGER,
         ${InspectionRepeatableSectionTableKeys.inspectionId} INTEGER NOT NULL,
         ${InspectionRepeatableSectionTableKeys.repeatableSectionId} INTEGER,
