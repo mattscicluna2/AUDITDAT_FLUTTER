@@ -21,17 +21,33 @@ class InspectionCardToolbar extends StatefulWidget {
       required this.mediaRequired})
       : super(key: key);
   @override
-  State<InspectionCardToolbar> createState() => _InspectionCardToolbarState();
+  State<InspectionCardToolbar> createState() => InspectionCardToolbarState();
 }
 
-class _InspectionCardToolbarState extends State<InspectionCardToolbar> {
-  late bool showComments = false;
+class InspectionCardToolbarState extends State<InspectionCardToolbar> {
+  late bool commentsVisible = false;
   final TextEditingController txtComment = TextEditingController();
+
+  showComments() {
+    txtComment.text = widget.comments != null ? widget.comments! : "";
+    setState(() => commentsVisible = true);
+    widget.onShowCommentsCallback();
+  }
+
+  _hideComments() {
+    setState(() => commentsVisible = false);
+    widget.onHideCommentsCallback();
+  }
+
+  _saveComments() {
+    widget.onCommentSavedCallback(txtComment.text);
+    _hideComments();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      if (showComments)
+      if (commentsVisible)
         Padding(
             padding: EdgeInsets.only(bottom: 5, top: 10),
             child: Column(children: [
@@ -56,11 +72,7 @@ class _InspectionCardToolbarState extends State<InspectionCardToolbar> {
                         backgroundColor: MaterialStateProperty.all(
                             ColorConstants.primaryAlt),
                       ),
-                      onPressed: () async {
-                        widget.onCommentSavedCallback(txtComment.text);
-                        setState(() => showComments = false);
-                        widget.onHideCommentsCallback();
-                      },
+                      onPressed: _saveComments,
                       child: Wrap(children: const [
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -78,10 +90,7 @@ class _InspectionCardToolbarState extends State<InspectionCardToolbar> {
                         backgroundColor:
                             MaterialStateProperty.all(ColorConstants.grey),
                       ),
-                      onPressed: () async {
-                        setState(() => showComments = false);
-                        widget.onHideCommentsCallback();
-                      },
+                      onPressed: _hideComments,
                       child: Wrap(children: const [
                         Padding(
                           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -98,11 +107,7 @@ class _InspectionCardToolbarState extends State<InspectionCardToolbar> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
-            onTap: () async {
-              txtComment.text = widget.comments != null ? widget.comments! : "";
-              setState(() => showComments = true);
-              widget.onShowCommentsCallback();
-            },
+            onTap: showComments,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
               child: Row(
@@ -110,7 +115,7 @@ class _InspectionCardToolbarState extends State<InspectionCardToolbar> {
                   FaIcon(
                     FontAwesomeIcons.solidComment,
                     size: 15,
-                    color: showComments
+                    color: commentsVisible
                         ? ColorConstants.primary
                         : ColorConstants.grey,
                   ),
@@ -118,7 +123,7 @@ class _InspectionCardToolbarState extends State<InspectionCardToolbar> {
                     " ${widget.comments == null ? "Add Comment" : "Edit Comment"}",
                     style: TextStyle(
                         fontSize: 15,
-                        color: showComments
+                        color: commentsVisible
                             ? ColorConstants.primary
                             : ColorConstants.grey),
                   ),

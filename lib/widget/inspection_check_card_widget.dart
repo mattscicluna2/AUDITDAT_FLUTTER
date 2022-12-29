@@ -68,8 +68,7 @@ class _InspectionCheckCardWidgetState extends State<InspectionCheckCardWidget> {
   }
 
   onCommentSaved(String comments) async {
-    inspectionCheck =
-        inspectionCheck.copy(comments: comments.isEmpty ? null : comments);
+    inspectionCheck = inspectionCheck.copy(comments: comments);
     await InspectionCheckRepo.instance.update(inspectionCheck);
 
     setState(

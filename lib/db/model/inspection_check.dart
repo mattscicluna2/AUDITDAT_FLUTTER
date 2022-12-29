@@ -80,7 +80,11 @@ class InspectionCheck {
         repeatableSectionId: repeatableSectionId ?? this.repeatableSectionId,
         notApplicable: notApplicable ?? this.notApplicable,
         responseId: responseId ?? this.responseId,
-        comments: comments,
+        comments: comments != null
+            ? comments.isEmpty
+                ? null
+                : comments
+            : this.comments,
         createdAt: this.createdAt,
         synced: synced ?? this.synced,
       );

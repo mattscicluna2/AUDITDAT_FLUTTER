@@ -31,6 +31,8 @@ class InspectionCommonCardWidget extends StatefulWidget {
 
 class _InspectionCommonCardWidgetState
     extends State<InspectionCommonCardWidget> {
+  final GlobalKey<InspectionCardToolbarState> _inspectionCardToolbarState =
+      GlobalKey<InspectionCardToolbarState>();
   bool commentsHidden = false;
 
   @override
@@ -50,7 +52,7 @@ class _InspectionCommonCardWidgetState
               contentPadding: EdgeInsets.symmetric(horizontal: 0),
               title: Row(children: [
                 if (widget.isRequired)
-                  Text(
+                  const Text(
                     "* ",
                     style: TextStyle(color: ColorConstants.danger),
                   ),
@@ -68,7 +70,7 @@ class _InspectionCommonCardWidgetState
                             padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
                             child: Row(
                               children: [
-                                FaIcon(
+                                const FaIcon(
                                   FontAwesomeIcons.solidStickyNote,
                                   size: 12,
                                 ),
@@ -81,14 +83,20 @@ class _InspectionCommonCardWidgetState
             ),
             widget.body,
             if (widget.comments != null && !commentsHidden)
-              Text(
-                widget.comments!,
-                style: const TextStyle(
-                  color: ColorConstants.charcoal,
-                  fontSize: 15,
+              GestureDetector(
+                onTap: () {
+                  _inspectionCardToolbarState.currentState!.showComments();
+                },
+                child: Text(
+                  widget.comments!,
+                  style: const TextStyle(
+                    color: ColorConstants.charcoal,
+                    fontSize: 15,
+                  ),
                 ),
               ),
             InspectionCardToolbar(
+              key: _inspectionCardToolbarState,
               comments: widget.comments,
               onCommentSavedCallback: widget.onCommentSavedCallback,
               onShowCommentsCallback: () {
