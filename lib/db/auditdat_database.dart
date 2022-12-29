@@ -15,6 +15,8 @@ import 'package:auditdat/db/model/template_response.dart';
 import 'package:auditdat/db/model/template_response_group.dart';
 import 'package:auditdat/db/model/template_section.dart';
 import 'package:auditdat/db/model/template_version.dart';
+import 'package:auditdat/db/repo/inspection_field_value_repo.dart';
+import 'package:auditdat/db/repo/inspection_repeatable_section_repo.dart';
 import 'package:auditdat/db/repo/inspection_repo.dart';
 import 'package:auditdat/db/repo/inspection_status_repo.dart';
 import 'package:auditdat/db/repo/note_repo.dart';
@@ -77,6 +79,8 @@ class AuditdatDatabase {
 
     await db.execute(InspectionStatusRepo.createTable());
     await db.execute(InspectionRepo.createTable());
+    await db.execute(InspectionRepeatableSectionRepo.createTable());
+    await db.execute(InspectionFieldValueRepo.createTable());
 
     //Seed Static data
     await (AuditdatSeeders()).run();
