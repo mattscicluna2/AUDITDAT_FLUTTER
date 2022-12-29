@@ -20,6 +20,7 @@ class _InspectionFieldCardWidgetState extends State<InspectionFieldCardWidget> {
   @override
   Widget build(BuildContext context) {
     return InspectionCommonCardWidget(
+      onCommentSavedCallback: (comment) => {},
       title: widget.field.name,
       note: widget.component.note,
       isRequired: widget.field.required,

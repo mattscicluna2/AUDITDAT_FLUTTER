@@ -29,8 +29,8 @@ class InspectionCheckCardWidget extends StatefulWidget {
 
 class _InspectionCheckCardWidgetState extends State<InspectionCheckCardWidget> {
   bool isLoading = true;
-  late int selectedResponseId = -1;
-  late List<TemplateResponse> responses;
+  int selectedResponseId = -1;
+  List<TemplateResponse> responses = [];
   late InspectionCheck inspectionCheck;
 
   @override
@@ -61,21 +61,34 @@ class _InspectionCheckCardWidgetState extends State<InspectionCheckCardWidget> {
 
   onResponsePressed(int responseId) async {
     inspectionCheck = inspectionCheck.copy(responseId: responseId);
-    InspectionCheckRepo.instance.update(inspectionCheck);
+    await InspectionCheckRepo.instance.update(inspectionCheck);
 
-    setState(() => selectedResponseId = responseId);
+    setState(() =>
+        {inspectionCheck = inspectionCheck, selectedResponseId = responseId});
+  }
+
+  onCommentSaved(String comments) async {
+    inspectionCheck =
+        inspectionCheck.copy(comments: comments.isEmpty ? null : comments);
+    await InspectionCheckRepo.instance.update(inspectionCheck);
+
+    setState(
+      () => inspectionCheck = inspectionCheck,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return InspectionCommonCardWidget(
-      title: widget.check.name,
-      note: widget.component.note,
-      isRequired: widget.check.required,
-      mediaRequired: widget.check.mediaRequired,
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Wrap(
+    return isLoading
+        ? Center(child: CircularProgressIndicator())
+        : InspectionCommonCardWidget(
+            onCommentSavedCallback: onCommentSaved,
+            title: widget.check.name,
+            note: widget.component.note,
+            comments: inspectionCheck.comments,
+            isRequired: widget.check.required,
+            mediaRequired: widget.check.mediaRequired,
+            body: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: List.generate(responses.length, (index) {
                 return SizedBox(
@@ -98,6 +111,6 @@ class _InspectionCheckCardWidgetState extends State<InspectionCheckCardWidget> {
                         ])));
               }),
             ),
-    );
+          );
   }
 }

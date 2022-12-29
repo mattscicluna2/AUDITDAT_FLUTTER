@@ -24,6 +24,7 @@ class _InspectionDropdownCardWidgetState
   @override
   Widget build(BuildContext context) {
     return InspectionCommonCardWidget(
+        onCommentSavedCallback: (comment) => {},
         title: "Dropdown Test?",
         note: "This is a test Note",
         body: DropdownSearch<String>(
